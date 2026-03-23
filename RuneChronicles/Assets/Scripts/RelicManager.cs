@@ -177,6 +177,14 @@ public class RelicManager : MonoBehaviour
         }
         return null;
     }
+    
+    /// <summary>
+    /// 获取所有遗物数据
+    /// </summary>
+    public List<RelicData> GetAllRelics()
+    {
+        return new List<RelicData>(relicDatabase.Values);
+    }
 }
 
 /// <summary>

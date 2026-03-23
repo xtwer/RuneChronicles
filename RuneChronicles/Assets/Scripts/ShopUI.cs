@@ -142,7 +142,7 @@ public class ShopUI : MonoBehaviour
         sectionText.text = title;
         sectionText.fontSize = 36;
         sectionText.fontStyle = FontStyles.Bold;
-        sectionText.alignment = TextAlignmentOptions.TopCenter;
+        sectionText.alignment = TextAlignmentOptions.Center;
         sectionText.color = Color.white;
     }
     

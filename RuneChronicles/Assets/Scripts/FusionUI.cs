@@ -209,7 +209,7 @@ public class FusionUI : MonoBehaviour
             
             for (int i = 0; i < displayCount; i++)
             {
-                var card = CardManager.Instance.GetCardById(deck[i]);
+                var card = deck[i];
                 if (card != null)
                 {
                     CreateDeckCard(deckPanel.transform, card, i);
@@ -394,7 +394,7 @@ public class FusionUI : MonoBehaviour
         }
         
         // 执行融合
-        var result = FusionManager.Instance.FuseCards(selectedCard1.cardId, selectedCard2.cardId);
+        var result = FusionManager.Instance.FuseCards(selectedCard1, selectedCard2);
         
         if (result != null)
         {
