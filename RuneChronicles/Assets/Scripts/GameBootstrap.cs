@@ -81,6 +81,12 @@ public class GameBootstrap : MonoBehaviour
             dmObj.AddComponent<DebugManager>();
         }
         
+        if (ResourceManager.Instance == null)
+        {
+            var resObj = new GameObject("ResourceManager");
+            resObj.AddComponent<ResourceManager>();
+        }
+        
         Debug.Log("[Bootstrap] 所有管理器初始化完成");
     }
     
