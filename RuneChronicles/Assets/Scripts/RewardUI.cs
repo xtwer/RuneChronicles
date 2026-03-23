@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 /// <summary>
@@ -67,11 +67,11 @@ public class RewardUI : MonoBehaviour
         titleRect.offsetMin = Vector2.zero;
         titleRect.offsetMax = Vector2.zero;
         
-        var titleText = titleObj.AddComponent<TextMeshProUGUI>();
+        var titleText = titleObj.AddComponent<Text>();
         titleText.text = "选择一张卡牌加入牌库";
         titleText.fontSize = 48;
-        titleText.fontStyle = FontStyles.Bold;
-        titleText.alignment = TextAlignmentOptions.Center;
+        titleText.fontStyle = FontStyle.Bold;
+        titleText.alignment = TextAnchor.MiddleCenter;
         titleText.color = Color.white;
         
         // 显示奖励卡牌
@@ -118,11 +118,11 @@ public class RewardUI : MonoBehaviour
         nameRect.offsetMin = Vector2.zero;
         nameRect.offsetMax = Vector2.zero;
         
-        var nameText = nameObj.AddComponent<TextMeshProUGUI>();
+        var nameText = nameObj.AddComponent<Text>();
         nameText.text = card.cardName;
         nameText.fontSize = 20;
-        nameText.fontStyle = FontStyles.Bold;
-        nameText.alignment = TextAlignmentOptions.Center;
+        nameText.fontStyle = FontStyle.Bold;
+        nameText.alignment = TextAnchor.MiddleCenter;
         nameText.color = Color.black;
         
         // 描述
@@ -134,10 +134,10 @@ public class RewardUI : MonoBehaviour
         descRect.offsetMin = Vector2.zero;
         descRect.offsetMax = Vector2.zero;
         
-        var descText = descObj.AddComponent<TextMeshProUGUI>();
+        var descText = descObj.AddComponent<Text>();
         descText.text = $"费用: {card.cost}\n效果: {card.value}\n\n{card.description}";
         descText.fontSize = 16;
-        descText.alignment = TextAlignmentOptions.TopLeft;
+        descText.alignment = TextAnchor.UpperCenterLeft;
         descText.color = Color.black;
     }
     
@@ -167,10 +167,10 @@ public class RewardUI : MonoBehaviour
         textRect.offsetMin = Vector2.zero;
         textRect.offsetMax = Vector2.zero;
         
-        var text = textObj.AddComponent<TextMeshProUGUI>();
+        var text = textObj.AddComponent<Text>();
         text.text = "跳过";
         text.fontSize = 32;
-        text.alignment = TextAlignmentOptions.Center;
+        text.alignment = TextAnchor.MiddleCenter;
         text.color = Color.white;
     }
     

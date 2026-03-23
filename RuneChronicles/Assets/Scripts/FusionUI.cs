@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 /// <summary>
@@ -13,7 +13,7 @@ public class FusionUI : MonoBehaviour
     private GameObject card1Slot;
     private GameObject card2Slot;
     private GameObject resultSlot;
-    private TextMeshProUGUI fusionPointsText;
+    private Text fusionPointsText;
     
     void Start()
     {
@@ -55,11 +55,11 @@ public class FusionUI : MonoBehaviour
         titleRect.offsetMin = Vector2.zero;
         titleRect.offsetMax = Vector2.zero;
         
-        var titleText = titleObj.AddComponent<TextMeshProUGUI>();
+        var titleText = titleObj.AddComponent<Text>();
         titleText.text = "卡牌融合";
         titleText.fontSize = 56;
-        titleText.fontStyle = FontStyles.Bold;
-        titleText.alignment = TextAlignmentOptions.Center;
+        titleText.fontStyle = FontStyle.Bold;
+        titleText.alignment = TextAnchor.MiddleCenter;
         titleText.color = new Color(1f, 0.6f, 1f);
         
         // 融合点显示
@@ -71,11 +71,11 @@ public class FusionUI : MonoBehaviour
         fpRect.offsetMin = Vector2.zero;
         fpRect.offsetMax = Vector2.zero;
         
-        fusionPointsText = fpObj.AddComponent<TextMeshProUGUI>();
+        fusionPointsText = fpObj.AddComponent<Text>();
         int fp = FusionManager.Instance != null ? FusionManager.Instance.GetFusionPoints() : 0;
         fusionPointsText.text = $"融合点: {fp}/10";
         fusionPointsText.fontSize = 28;
-        fusionPointsText.alignment = TextAlignmentOptions.Center;
+        fusionPointsText.alignment = TextAnchor.MiddleCenter;
         fusionPointsText.color = new Color(1f, 0.6f, 1f);
         
         // 融合区（顶部中间）
@@ -105,11 +105,11 @@ public class FusionUI : MonoBehaviour
         plusRect.anchoredPosition = Vector2.zero;
         plusRect.sizeDelta = new Vector2(100, 100);
         
-        var plusText = plusObj.AddComponent<TextMeshProUGUI>();
+        var plusText = plusObj.AddComponent<Text>();
         plusText.text = "+";
         plusText.fontSize = 72;
-        plusText.fontStyle = FontStyles.Bold;
-        plusText.alignment = TextAlignmentOptions.Center;
+        plusText.fontStyle = FontStyle.Bold;
+        plusText.alignment = TextAnchor.MiddleCenter;
         plusText.color = Color.white;
         
         // 卡槽2
@@ -125,11 +125,11 @@ public class FusionUI : MonoBehaviour
         equalsRect.anchoredPosition = new Vector2(0, -150);
         equalsRect.sizeDelta = new Vector2(100, 100);
         
-        var equalsText = equalsObj.AddComponent<TextMeshProUGUI>();
+        var equalsText = equalsObj.AddComponent<Text>();
         equalsText.text = "=";
         equalsText.fontSize = 72;
-        equalsText.fontStyle = FontStyles.Bold;
-        equalsText.alignment = TextAlignmentOptions.Center;
+        equalsText.fontStyle = FontStyle.Bold;
+        equalsText.alignment = TextAnchor.MiddleCenter;
         equalsText.color = Color.white;
         
         // 结果槽
@@ -160,10 +160,10 @@ public class FusionUI : MonoBehaviour
         labelRect.offsetMin = Vector2.zero;
         labelRect.offsetMax = Vector2.zero;
         
-        var labelText = labelObj.AddComponent<TextMeshProUGUI>();
+        var labelText = labelObj.AddComponent<Text>();
         labelText.text = label;
         labelText.fontSize = 20;
-        labelText.alignment = TextAlignmentOptions.Center;
+        labelText.alignment = TextAnchor.MiddleCenter;
         labelText.color = Color.gray;
         
         return slotObj;
@@ -180,10 +180,10 @@ public class FusionUI : MonoBehaviour
         titleRect.offsetMin = Vector2.zero;
         titleRect.offsetMax = Vector2.zero;
         
-        var titleText = titleObj.AddComponent<TextMeshProUGUI>();
+        var titleText = titleObj.AddComponent<Text>();
         titleText.text = "你的牌库（点击选择）";
         titleText.fontSize = 32;
-        titleText.alignment = TextAlignmentOptions.Center;
+        titleText.alignment = TextAnchor.MiddleCenter;
         titleText.color = Color.white;
         
         // 卡牌列表（滚动视图简化版）
@@ -241,10 +241,10 @@ public class FusionUI : MonoBehaviour
         nameRect.offsetMin = Vector2.zero;
         nameRect.offsetMax = Vector2.zero;
         
-        var nameText = nameObj.AddComponent<TextMeshProUGUI>();
+        var nameText = nameObj.AddComponent<Text>();
         nameText.text = card.cardName;
         nameText.fontSize = 14;
-        nameText.alignment = TextAlignmentOptions.Center;
+        nameText.alignment = TextAnchor.MiddleCenter;
         nameText.color = Color.black;
         
         // 费用
@@ -256,10 +256,10 @@ public class FusionUI : MonoBehaviour
         costRect.offsetMin = Vector2.zero;
         costRect.offsetMax = Vector2.zero;
         
-        var costText = costObj.AddComponent<TextMeshProUGUI>();
+        var costText = costObj.AddComponent<Text>();
         costText.text = card.cost.ToString();
         costText.fontSize = 18;
-        costText.alignment = TextAlignmentOptions.Center;
+        costText.alignment = TextAnchor.MiddleCenter;
         costText.color = new Color(0, 0.3f, 0.8f);
     }
     
@@ -301,10 +301,10 @@ public class FusionUI : MonoBehaviour
         textRect.offsetMin = Vector2.zero;
         textRect.offsetMax = Vector2.zero;
         
-        var tmp = textObj.AddComponent<TextMeshProUGUI>();
+        var tmp = textObj.AddComponent<Text>();
         tmp.text = text;
         tmp.fontSize = 32;
-        tmp.alignment = TextAlignmentOptions.Center;
+        tmp.alignment = TextAnchor.MiddleCenter;
         tmp.color = Color.white;
     }
     
@@ -363,10 +363,10 @@ public class FusionUI : MonoBehaviour
         cardInfoRect.offsetMin = Vector2.zero;
         cardInfoRect.offsetMax = Vector2.zero;
         
-        var cardInfoText = cardInfoObj.AddComponent<TextMeshProUGUI>();
+        var cardInfoText = cardInfoObj.AddComponent<Text>();
         cardInfoText.text = $"{card.cardName}\n费用: {card.cost}\n效果: {card.value}";
         cardInfoText.fontSize = 16;
-        cardInfoText.alignment = TextAlignmentOptions.Center;
+        cardInfoText.alignment = TextAnchor.MiddleCenter;
         cardInfoText.color = Color.white;
         
         slot.GetComponent<Image>().color = GetCardColor(card.rarity);

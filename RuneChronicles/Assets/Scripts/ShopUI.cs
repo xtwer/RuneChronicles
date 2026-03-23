@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 /// <summary>
@@ -81,11 +81,11 @@ public class ShopUI : MonoBehaviour
         titleRect.offsetMin = Vector2.zero;
         titleRect.offsetMax = Vector2.zero;
         
-        var titleText = titleObj.AddComponent<TextMeshProUGUI>();
+        var titleText = titleObj.AddComponent<Text>();
         titleText.text = "商店";
         titleText.fontSize = 56;
-        titleText.fontStyle = FontStyles.Bold;
-        titleText.alignment = TextAlignmentOptions.Center;
+        titleText.fontStyle = FontStyle.Bold;
+        titleText.alignment = TextAnchor.MiddleCenter;
         titleText.color = new Color(1f, 0.8f, 0.3f);
         
         // 金币显示
@@ -97,11 +97,11 @@ public class ShopUI : MonoBehaviour
         goldRect.offsetMin = Vector2.zero;
         goldRect.offsetMax = Vector2.zero;
         
-        var goldText = goldObj.AddComponent<TextMeshProUGUI>();
+        var goldText = goldObj.AddComponent<Text>();
         int currentGold = GameManager.Instance != null ? GameManager.Instance.currentGold : 0;
         goldText.text = $"💰 {currentGold}";
         goldText.fontSize = 32;
-        goldText.alignment = TextAlignmentOptions.Center;
+        goldText.alignment = TextAnchor.MiddleCenter;
         goldText.color = Color.yellow;
         
         // 卡牌区
@@ -138,11 +138,11 @@ public class ShopUI : MonoBehaviour
         sectionRect.offsetMin = Vector2.zero;
         sectionRect.offsetMax = Vector2.zero;
         
-        var sectionText = sectionObj.AddComponent<TextMeshProUGUI>();
+        var sectionText = sectionObj.AddComponent<Text>();
         sectionText.text = title;
         sectionText.fontSize = 36;
-        sectionText.fontStyle = FontStyles.Bold;
-        sectionText.alignment = TextAlignmentOptions.Center;
+        sectionText.fontStyle = FontStyle.Bold;
+        sectionText.alignment = TextAnchor.MiddleCenter;
         sectionText.color = Color.white;
     }
     
@@ -178,10 +178,10 @@ public class ShopUI : MonoBehaviour
         nameRect.offsetMin = Vector2.zero;
         nameRect.offsetMax = Vector2.zero;
         
-        var nameText = nameObj.AddComponent<TextMeshProUGUI>();
+        var nameText = nameObj.AddComponent<Text>();
         nameText.text = card.cardName;
         nameText.fontSize = 16;
-        nameText.alignment = TextAlignmentOptions.Center;
+        nameText.alignment = TextAnchor.MiddleCenter;
         nameText.color = Color.black;
         
         // 价格
@@ -193,11 +193,11 @@ public class ShopUI : MonoBehaviour
         priceRect.offsetMin = Vector2.zero;
         priceRect.offsetMax = Vector2.zero;
         
-        var priceText = priceObj.AddComponent<TextMeshProUGUI>();
+        var priceText = priceObj.AddComponent<Text>();
         priceText.text = $"{CARD_PRICE}💰";
         priceText.fontSize = 20;
-        priceText.fontStyle = FontStyles.Bold;
-        priceText.alignment = TextAlignmentOptions.Center;
+        priceText.fontStyle = FontStyle.Bold;
+        priceText.alignment = TextAnchor.MiddleCenter;
         priceText.color = Color.yellow;
     }
     
@@ -236,11 +236,11 @@ public class ShopUI : MonoBehaviour
         nameRect.offsetMin = Vector2.zero;
         nameRect.offsetMax = Vector2.zero;
         
-        var nameText = nameObj.AddComponent<TextMeshProUGUI>();
+        var nameText = nameObj.AddComponent<Text>();
         nameText.text = relicData.relicName;
         nameText.fontSize = 20;
-        nameText.fontStyle = FontStyles.Bold;
-        nameText.alignment = TextAlignmentOptions.Center;
+        nameText.fontStyle = FontStyle.Bold;
+        nameText.alignment = TextAnchor.MiddleCenter;
         nameText.color = Color.white;
         
         // 描述
@@ -252,10 +252,10 @@ public class ShopUI : MonoBehaviour
         descRect.offsetMin = Vector2.zero;
         descRect.offsetMax = Vector2.zero;
         
-        var descText = descObj.AddComponent<TextMeshProUGUI>();
+        var descText = descObj.AddComponent<Text>();
         descText.text = relicData.description;
         descText.fontSize = 14;
-        descText.alignment = TextAlignmentOptions.Center;
+        descText.alignment = TextAnchor.MiddleCenter;
         descText.color = Color.white;
         
         // 价格
@@ -267,11 +267,11 @@ public class ShopUI : MonoBehaviour
         priceRect.offsetMin = Vector2.zero;
         priceRect.offsetMax = Vector2.zero;
         
-        var priceText = priceObj.AddComponent<TextMeshProUGUI>();
+        var priceText = priceObj.AddComponent<Text>();
         priceText.text = $"{RELIC_PRICE}💰";
         priceText.fontSize = 24;
-        priceText.fontStyle = FontStyles.Bold;
-        priceText.alignment = TextAlignmentOptions.Center;
+        priceText.fontStyle = FontStyle.Bold;
+        priceText.alignment = TextAnchor.MiddleCenter;
         priceText.color = Color.yellow;
     }
     
@@ -301,10 +301,10 @@ public class ShopUI : MonoBehaviour
         textRect.offsetMin = Vector2.zero;
         textRect.offsetMax = Vector2.zero;
         
-        var text = textObj.AddComponent<TextMeshProUGUI>();
+        var text = textObj.AddComponent<Text>();
         text.text = $"移除卡牌 ({REMOVE_PRICE}💰)";
         text.fontSize = 24;
-        text.alignment = TextAlignmentOptions.Center;
+        text.alignment = TextAnchor.MiddleCenter;
         text.color = Color.white;
     }
     
@@ -334,10 +334,10 @@ public class ShopUI : MonoBehaviour
         textRect.offsetMin = Vector2.zero;
         textRect.offsetMax = Vector2.zero;
         
-        var text = textObj.AddComponent<TextMeshProUGUI>();
+        var text = textObj.AddComponent<Text>();
         text.text = "离开商店";
         text.fontSize = 28;
-        text.alignment = TextAlignmentOptions.Center;
+        text.alignment = TextAnchor.MiddleCenter;
         text.color = Color.white;
     }
     

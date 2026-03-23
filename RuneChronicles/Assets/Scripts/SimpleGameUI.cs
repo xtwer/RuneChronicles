@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
+using UnityEngine.UI;
 
 /// <summary>
 /// 最简单的游戏UI - 可以实际玩游戏
@@ -8,8 +8,8 @@ using TMPro;
 public class SimpleGameUI : MonoBehaviour
 {
     [Header("UI引用")]
-    public TextMeshProUGUI statusText;
-    public TextMeshProUGUI cardInfoText;
+    public Text statusText;
+    public Text cardInfoText;
     public Button startButton;
     public Button drawButton;
     public Button endTurnButton;
@@ -42,10 +42,10 @@ public class SimpleGameUI : MonoBehaviour
         statusRect.anchoredPosition = new Vector2(0, -20);
         statusRect.sizeDelta = new Vector2(-40, 100);
         
-        statusText = statusObj.AddComponent<TextMeshProUGUI>();
+        statusText = statusObj.AddComponent<Text>();
         statusText.text = "符文编年史 - MVP测试版\n点击\"开始游戏\"开始";
         statusText.fontSize = 24;
-        statusText.alignment = TextAlignmentOptions.Top;
+        statusText.alignment = TextAnchor.UpperCenter;
         statusText.color = Color.white;
         
         // 卡牌信息文本（中间）
@@ -58,10 +58,10 @@ public class SimpleGameUI : MonoBehaviour
         cardInfoRect.anchoredPosition = Vector2.zero;
         cardInfoRect.sizeDelta = new Vector2(-100, -300);
         
-        cardInfoText = cardInfoObj.AddComponent<TextMeshProUGUI>();
+        cardInfoText = cardInfoObj.AddComponent<Text>();
         cardInfoText.text = "等待开始...";
         cardInfoText.fontSize = 20;
-        cardInfoText.alignment = TextAlignmentOptions.TopLeft;
+        cardInfoText.alignment = TextAnchor.UpperCenterLeft;
         cardInfoText.color = new Color(0.9f, 0.9f, 0.9f);
         
         // 按钮区域（底部）
@@ -97,10 +97,10 @@ public class SimpleGameUI : MonoBehaviour
         textRect.anchorMax = Vector2.one;
         textRect.sizeDelta = Vector2.zero;
         
-        var tmp = textObj.AddComponent<TextMeshProUGUI>();
+        var tmp = textObj.AddComponent<Text>();
         tmp.text = label;
         tmp.fontSize = 24;
-        tmp.alignment = TextAlignmentOptions.Center;
+        tmp.alignment = TextAnchor.MiddleCenter;
         tmp.color = Color.white;
     }
     

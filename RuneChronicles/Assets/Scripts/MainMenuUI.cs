@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
+using UnityEngine.UI;
 
 /// <summary>
 /// 主菜单UI
@@ -47,11 +47,11 @@ public class MainMenuUI : MonoBehaviour
         titleRect.pivot = new Vector2(0.5f, 0.5f);
         titleRect.sizeDelta = new Vector2(800, 200);
         
-        var titleText = titleObj.AddComponent<TextMeshProUGUI>();
+        var titleText = titleObj.AddComponent<Text>();
         titleText.text = "符文编年史\nRUNE CHRONICLES";
         titleText.fontSize = 72;
-        titleText.fontStyle = FontStyles.Bold;
-        titleText.alignment = TextAlignmentOptions.Center;
+        titleText.fontStyle = FontStyle.Bold;
+        titleText.alignment = TextAnchor.MiddleCenter;
         titleText.color = new Color(1f, 0.8f, 0.3f);
         
         // 按钮组
@@ -69,10 +69,10 @@ public class MainMenuUI : MonoBehaviour
         versionRect.anchoredPosition = new Vector2(-20, 20);
         versionRect.sizeDelta = new Vector2(200, 30);
         
-        var versionText = versionObj.AddComponent<TextMeshProUGUI>();
+        var versionText = versionObj.AddComponent<Text>();
         versionText.text = "v1.0 - MVP";
         versionText.fontSize = 18;
-        versionText.alignment = TextAlignmentOptions.BottomRight;
+        versionText.alignment = TextAnchor.LowerCenterRight;
         versionText.color = new Color(0.5f, 0.5f, 0.5f);
         
         Debug.Log("[MainMenuUI] 主菜单已创建");
@@ -104,10 +104,10 @@ public class MainMenuUI : MonoBehaviour
         textRect.offsetMin = Vector2.zero;
         textRect.offsetMax = Vector2.zero;
         
-        var tmp = textObj.AddComponent<TextMeshProUGUI>();
+        var tmp = textObj.AddComponent<Text>();
         tmp.text = text;
         tmp.fontSize = 36;
-        tmp.alignment = TextAlignmentOptions.Center;
+        tmp.alignment = TextAnchor.MiddleCenter;
         tmp.color = Color.white;
     }
     

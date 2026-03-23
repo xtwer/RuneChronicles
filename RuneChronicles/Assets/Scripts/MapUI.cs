@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 /// <summary>
@@ -52,11 +52,11 @@ public class MapUI : MonoBehaviour
         titleRect.offsetMin = Vector2.zero;
         titleRect.offsetMax = Vector2.zero;
         
-        var titleText = titleObj.AddComponent<TextMeshProUGUI>();
+        var titleText = titleObj.AddComponent<Text>();
         titleText.text = "选择你的路径";
         titleText.fontSize = 48;
-        titleText.fontStyle = FontStyles.Bold;
-        titleText.alignment = TextAlignmentOptions.Center;
+        titleText.fontStyle = FontStyle.Bold;
+        titleText.alignment = TextAnchor.MiddleCenter;
         titleText.color = Color.white;
         
         // 融合按钮（右上角）
@@ -90,10 +90,10 @@ public class MapUI : MonoBehaviour
         textRect.offsetMin = Vector2.zero;
         textRect.offsetMax = Vector2.zero;
         
-        var text = textObj.AddComponent<TextMeshProUGUI>();
+        var text = textObj.AddComponent<Text>();
         text.text = "融合";
         text.fontSize = 24;
-        text.alignment = TextAlignmentOptions.Center;
+        text.alignment = TextAnchor.MiddleCenter;
         text.color = Color.white;
     }
     
@@ -163,11 +163,11 @@ public class MapUI : MonoBehaviour
         textRect.offsetMin = Vector2.zero;
         textRect.offsetMax = Vector2.zero;
         
-        var text = textObj.AddComponent<TextMeshProUGUI>();
+        var text = textObj.AddComponent<Text>();
         text.text = GetNodeText(node.nodeType);
         text.fontSize = 32;
-        text.fontStyle = FontStyles.Bold;
-        text.alignment = TextAlignmentOptions.Center;
+        text.fontStyle = FontStyle.Bold;
+        text.alignment = TextAnchor.MiddleCenter;
         text.color = Color.white;
         
         nodeButtons.Add(button);

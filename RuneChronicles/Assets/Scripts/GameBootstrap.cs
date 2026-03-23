@@ -11,6 +11,10 @@ public class GameBootstrap : MonoBehaviour
         Debug.Log("=== 游戏启动中 ===");
         
         InitializeManagers();
+        
+        // 添加UI字体修复器
+        var fontFixer = gameObject.AddComponent<UIFontFixer>();
+        
         StartGame();
         
         Debug.Log("=== 游戏启动完成 ===");

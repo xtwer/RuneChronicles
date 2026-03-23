@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using TMPro;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 /// <summary>
@@ -16,15 +16,15 @@ public class BattleUI : MonoBehaviour
     public GameObject buttonPanel;
     
     [Header("玩家信息")]
-    public TextMeshProUGUI playerHPText;
-    public TextMeshProUGUI playerBlockText;
+    public Text playerHPText;
+    public Text playerBlockText;
     public Slider playerHPBar;
     
     [Header("能量信息")]
-    public TextMeshProUGUI energyText;
+    public Text energyText;
     
     [Header("回合信息")]
-    public TextMeshProUGUI turnText;
+    public Text turnText;
     public Button endTurnButton;
     
     [Header("卡牌预制体")]
@@ -111,7 +111,7 @@ public class BattleUI : MonoBehaviour
         CreatePlayerStat(playerPanel.transform, "Block", new Vector2(0, 0.3f), out playerBlockText, out _);
     }
     
-    void CreatePlayerStat(Transform parent, string label, Vector2 yPos, out TextMeshProUGUI text, out Slider slider)
+    void CreatePlayerStat(Transform parent, string label, Vector2 yPos, out Text text, out Slider slider)
     {
         var statObj = new GameObject(label);
         statObj.transform.SetParent(parent, false);
@@ -122,10 +122,10 @@ public class BattleUI : MonoBehaviour
         rect.offsetMin = Vector2.zero;
         rect.offsetMax = Vector2.zero;
         
-        text = statObj.AddComponent<TextMeshProUGUI>();
+        text = statObj.AddComponent<Text>();
         text.text = $"{label}: 0";
         text.fontSize = 24;
-        text.alignment = TextAlignmentOptions.Left;
+        text.alignment = TextAnchor.MiddleLeft;
         text.color = Color.white;
         
         // 血条（只给HP）
@@ -239,10 +239,10 @@ public class BattleUI : MonoBehaviour
         energyRect.offsetMin = Vector2.zero;
         energyRect.offsetMax = Vector2.zero;
         
-        energyText = energyObj.AddComponent<TextMeshProUGUI>();
+        energyText = energyObj.AddComponent<Text>();
         energyText.text = "能量: 3/3";
         energyText.fontSize = 28;
-        energyText.alignment = TextAlignmentOptions.Center;
+        energyText.alignment = TextAnchor.MiddleCenter;
         energyText.color = new Color(0.3f, 0.6f, 1f);
         
         // 回合显示
@@ -254,10 +254,10 @@ public class BattleUI : MonoBehaviour
         turnRect.offsetMin = Vector2.zero;
         turnRect.offsetMax = Vector2.zero;
         
-        turnText = turnObj.AddComponent<TextMeshProUGUI>();
+        turnText = turnObj.AddComponent<Text>();
         turnText.text = "回合: 1";
         turnText.fontSize = 20;
-        turnText.alignment = TextAlignmentOptions.Center;
+        turnText.alignment = TextAnchor.MiddleCenter;
         turnText.color = Color.white;
         
         // 结束回合按钮
@@ -283,10 +283,10 @@ public class BattleUI : MonoBehaviour
         btnTextRect.offsetMin = Vector2.zero;
         btnTextRect.offsetMax = Vector2.zero;
         
-        var btnText = btnTextObj.AddComponent<TextMeshProUGUI>();
+        var btnText = btnTextObj.AddComponent<Text>();
         btnText.text = "结束回合";
         btnText.fontSize = 24;
-        btnText.alignment = TextAlignmentOptions.Center;
+        btnText.alignment = TextAnchor.MiddleCenter;
         btnText.color = Color.white;
     }
     
@@ -356,10 +356,10 @@ public class BattleUI : MonoBehaviour
         nameRect.offsetMin = Vector2.zero;
         nameRect.offsetMax = Vector2.zero;
         
-        var nameText = nameObj.AddComponent<TextMeshProUGUI>();
+        var nameText = nameObj.AddComponent<Text>();
         nameText.text = card.cardName;
         nameText.fontSize = 18;
-        nameText.alignment = TextAlignmentOptions.Center;
+        nameText.alignment = TextAnchor.MiddleCenter;
         nameText.color = Color.black;
         
         // 费用
@@ -371,11 +371,11 @@ public class BattleUI : MonoBehaviour
         costRect.offsetMin = Vector2.zero;
         costRect.offsetMax = Vector2.zero;
         
-        var costText = costObj.AddComponent<TextMeshProUGUI>();
+        var costText = costObj.AddComponent<Text>();
         costText.text = card.cost.ToString();
         costText.fontSize = 24;
-        costText.fontStyle = FontStyles.Bold;
-        costText.alignment = TextAlignmentOptions.Center;
+        costText.fontStyle = FontStyle.Bold;
+        costText.alignment = TextAnchor.MiddleCenter;
         costText.color = new Color(0, 0.3f, 0.8f);
         
         // 效果值
@@ -387,11 +387,11 @@ public class BattleUI : MonoBehaviour
         valueRect.offsetMin = Vector2.zero;
         valueRect.offsetMax = Vector2.zero;
         
-        var valueText = valueObj.AddComponent<TextMeshProUGUI>();
+        var valueText = valueObj.AddComponent<Text>();
         valueText.text = card.value.ToString();
         valueText.fontSize = 24;
-        valueText.fontStyle = FontStyles.Bold;
-        valueText.alignment = TextAlignmentOptions.Center;
+        valueText.fontStyle = FontStyle.Bold;
+        valueText.alignment = TextAnchor.MiddleCenter;
         valueText.color = Color.red;
         
         // 添加拖拽功能

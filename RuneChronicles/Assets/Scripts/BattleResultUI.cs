@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
+using UnityEngine.UI;
 
 /// <summary>
 /// 战斗结算UI - 显示胜利/失败
@@ -60,11 +60,11 @@ public class BattleResultUI : MonoBehaviour
         titleRect.offsetMin = Vector2.zero;
         titleRect.offsetMax = Vector2.zero;
         
-        var titleText = titleObj.AddComponent<TextMeshProUGUI>();
+        var titleText = titleObj.AddComponent<Text>();
         titleText.text = isVictory ? "胜利！" : "失败...";
         titleText.fontSize = 72;
-        titleText.fontStyle = FontStyles.Bold;
-        titleText.alignment = TextAlignmentOptions.Center;
+        titleText.fontStyle = FontStyle.Bold;
+        titleText.alignment = TextAnchor.MiddleCenter;
         titleText.color = Color.white;
         
         // 按钮
@@ -106,10 +106,10 @@ public class BattleResultUI : MonoBehaviour
         textRect.offsetMin = Vector2.zero;
         textRect.offsetMax = Vector2.zero;
         
-        var tmp = textObj.AddComponent<TextMeshProUGUI>();
+        var tmp = textObj.AddComponent<Text>();
         tmp.text = text;
         tmp.fontSize = 36;
-        tmp.alignment = TextAlignmentOptions.Center;
+        tmp.alignment = TextAnchor.MiddleCenter;
         tmp.color = Color.white;
     }
     
