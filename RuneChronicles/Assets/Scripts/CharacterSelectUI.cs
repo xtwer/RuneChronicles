@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 /// <summary>
-/// 角色选择UI
+/// 角色选择UI - 中文版
 /// </summary>
 public class CharacterSelectUI : MonoBehaviour
 {
+    private Canvas canvas;
+    
     void Start()
     {
         CreateCharacterSelect();
@@ -15,7 +16,7 @@ public class CharacterSelectUI : MonoBehaviour
     void CreateCharacterSelect()
     {
         // 创建Canvas
-        Canvas canvas = FindObjectOfType<Canvas>();
+        canvas = FindObjectOfType<Canvas>();
         if (canvas == null)
         {
             var canvasObj = new GameObject("CharacterSelectCanvas");
@@ -47,12 +48,7 @@ public class CharacterSelectUI : MonoBehaviour
         titleRect.pivot = new Vector2(0.5f, 0.5f);
         titleRect.sizeDelta = new Vector2(800, 100);
         
-        var titleText = titleObj.AddComponent<TextMeshProUGUI>();
-        titleText.text = "选择你的角色";
-        titleText.fontSize = 56;
-        titleText.fontStyle = FontStyles.Bold;
-        titleText.alignment = TextAlignmentOptions.Center;
-        titleText.color = Color.white;
+        ChineseUI.CreateTitle(titleObj, "选择你的角色");
         
         // 法师卡片
         CreateCharacterCard(canvas.transform, CharacterClass.Mage, 
@@ -99,12 +95,8 @@ public class CharacterSelectUI : MonoBehaviour
         nameRect.offsetMin = Vector2.zero;
         nameRect.offsetMax = Vector2.zero;
         
-        var nameText = nameObj.AddComponent<TextMeshProUGUI>();
-        nameText.text = name;
-        nameText.fontSize = 42;
-        nameText.fontStyle = FontStyles.Bold;
-        nameText.alignment = TextAlignmentOptions.Center;
-        nameText.color = new Color(1f, 0.8f, 0.3f);
+        var nameText = ChineseUI.CreateText(nameObj, name, 42, TextAnchor.MiddleCenter, new Color(1f, 0.8f, 0.3f));
+        nameText.fontStyle = FontStyle.Bold;
         
         // 描述
         var descObj = new GameObject("Description");
@@ -115,11 +107,7 @@ public class CharacterSelectUI : MonoBehaviour
         descRect.offsetMin = Vector2.zero;
         descRect.offsetMax = Vector2.zero;
         
-        var descText = descObj.AddComponent<TextMeshProUGUI>();
-        descText.text = desc;
-        descText.fontSize = 28;
-        descText.alignment = TextAlignmentOptions.Center;
-        descText.color = Color.white;
+        ChineseUI.CreateText(descObj, desc, 28, TextAnchor.MiddleCenter, Color.white);
     }
     
     void CreateButton(Transform parent, string text, Vector2 pos, UnityEngine.Events.UnityAction action)
@@ -148,11 +136,7 @@ public class CharacterSelectUI : MonoBehaviour
         textRect.offsetMin = Vector2.zero;
         textRect.offsetMax = Vector2.zero;
         
-        var tmp = textObj.AddComponent<TextMeshProUGUI>();
-        tmp.text = text;
-        tmp.fontSize = 32;
-        tmp.alignment = TextAlignmentOptions.Center;
-        tmp.color = Color.white;
+        ChineseUI.CreateButtonText(textObj, text);
     }
     
     void OnSelectCharacter(CharacterClass charClass)
@@ -165,36 +149,15 @@ public class CharacterSelectUI : MonoBehaviour
             GameManager.Instance.StartNewRun(charClass);
         }
         
-        // 销毁角色选择UI
+        // 先记录canvas引用
+        var canvasToKeep = canvas;
+        
+        // 销毁角色选择UI（但保留Canvas）
         Destroy(gameObject);
         
-        // 创建战斗UI
-        var battleUIObj = new GameObject("BattleUI");
-        battleUIObj.AddComponent<BattleUI>();
-        
-        // 开始第一场战斗（测试）
-        StartFirstBattle();
-    }
-    
-    void StartFirstBattle()
-    {
-        // 创建测试敌人
-        var enemy1 = new GameObject("Enemy1").AddComponent<Enemy>();
-        enemy1.enemyId = "ENM_001";
-        enemy1.enemyName = "符文傀儡";
-        enemy1.maxHP = 40;
-        enemy1.currentHP = 40;
-        enemy1.minDamage = 5;
-        enemy1.maxDamage = 7;
-        enemy1.behaviorPattern = EnemyBehaviorPattern.AttackDefend;
-        
-        var enemies = new System.Collections.Generic.List<Enemy> { enemy1 };
-        var playerDeck = CardManager.Instance.playerDeck;
-        
-        if (BattleManager.Instance != null)
-        {
-            BattleManager.Instance.StartBattle(playerDeck, enemies);
-        }
+        // 创建地图UI（使用同一个Canvas）
+        var mapUIObj = new GameObject("MapUI");
+        mapUIObj.AddComponent<MapUI>();
     }
     
     void OnBack()
@@ -206,6 +169,6 @@ public class CharacterSelectUI : MonoBehaviour
         
         // 重新创建主菜单
         var menuObj = new GameObject("MainMenuUI");
-        menuObj.AddComponent<MainMenuUI>();
+        menuObj.AddComponent<MainMenuUI_Chinese>();
     }
 }
