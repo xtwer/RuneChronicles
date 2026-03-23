@@ -53,7 +53,7 @@ public class MainMenuUI_Chinese : MonoBehaviour
         titleText.alignment = TextAnchor.MiddleCenter;
         titleText.color = new Color(1f, 0.8f, 0.3f);
         // 使用Arial Unicode MS支持中文
-        titleText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+        titleText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         
         // 按钮组
         CreateMenuButton(canvas.transform, "开始游戏", new Vector2(0, 50), OnStartGame);
@@ -75,7 +75,7 @@ public class MainMenuUI_Chinese : MonoBehaviour
         versionText.fontSize = 18;
         versionText.alignment = TextAnchor.LowerRight;
         versionText.color = new Color(0.5f, 0.5f, 0.5f);
-        versionText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+        versionText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         
         Debug.Log("[MainMenuUI] 主菜单已创建（中文版）");
     }
@@ -111,7 +111,7 @@ public class MainMenuUI_Chinese : MonoBehaviour
         buttonText.fontSize = 36;
         buttonText.alignment = TextAnchor.MiddleCenter;
         buttonText.color = Color.white;
-        buttonText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+        buttonText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
     }
     
     void OnStartGame()
