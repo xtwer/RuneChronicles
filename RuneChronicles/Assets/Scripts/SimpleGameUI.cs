@@ -61,7 +61,7 @@ public class SimpleGameUI : MonoBehaviour
         cardInfoText = cardInfoObj.AddComponent<Text>();
         cardInfoText.text = "等待开始...";
         cardInfoText.fontSize = 20;
-        cardInfoText.alignment = TextAnchor.UpperCenterLeft;
+        cardInfoText.alignment = TextAnchor.UpperLeft;
         cardInfoText.color = new Color(0.9f, 0.9f, 0.9f);
         
         // 按钮区域（底部）

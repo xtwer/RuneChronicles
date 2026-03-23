@@ -72,7 +72,7 @@ public class MainMenuUI : MonoBehaviour
         var versionText = versionObj.AddComponent<Text>();
         versionText.text = "v1.0 - MVP";
         versionText.fontSize = 18;
-        versionText.alignment = TextAnchor.LowerCenterRight;
+        versionText.alignment = TextAnchor.LowerRight;
         versionText.color = new Color(0.5f, 0.5f, 0.5f);
         
         Debug.Log("[MainMenuUI] 主菜单已创建");

@@ -9,6 +9,7 @@ public class CardManager : MonoBehaviour
     public static CardManager Instance { get; private set; }
     
     private Dictionary<string, CardData> cardDatabase = new Dictionary<string, CardData>();
+    private List<CardData> allCards = new List<CardData>();
     
     [Header("当前牌库")]
     public List<CardData> playerDeck = new List<CardData>();

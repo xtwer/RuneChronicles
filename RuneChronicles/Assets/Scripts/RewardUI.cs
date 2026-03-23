@@ -137,7 +137,7 @@ public class RewardUI : MonoBehaviour
         var descText = descObj.AddComponent<Text>();
         descText.text = $"费用: {card.cost}\n效果: {card.value}\n\n{card.description}";
         descText.fontSize = 16;
-        descText.alignment = TextAnchor.UpperCenterLeft;
+        descText.alignment = TextAnchor.UpperLeft;
         descText.color = Color.black;
     }
     
