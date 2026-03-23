@@ -94,9 +94,9 @@ public class GameBootstrap : MonoBehaviour
     {
         Debug.Log("[Bootstrap] 启动主菜单...");
         
-        // 创建主菜单
+        // 创建主菜单（中文版）
         var menuObj = new GameObject("MainMenuUI");
-        menuObj.AddComponent<MainMenuUI>();
+        menuObj.AddComponent<MainMenuUI_Chinese>();
         
         // 创建EventSystem（如果不存在）
         if (FindObjectOfType<UnityEngine.EventSystems.EventSystem>() == null)
