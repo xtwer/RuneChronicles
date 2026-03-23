@@ -13,10 +13,8 @@ namespace RuneChronicles
         {
             if (CardManager.Instance == null) return;
             
-            if (displayedCards.Count != CardManager.Instance.hand.Count)
-            {
-                RefreshHand();
-            }
+            // 注意：CardManager已改为使用playerDeck，不再有hand属性
+            // 这个UI显示类暂时禁用，等待重构
         }
         
         private void RefreshHand()
@@ -27,17 +25,19 @@ namespace RuneChronicles
             }
             displayedCards.Clear();
             
-            if (CardManager.Instance == null) return;
-            
-            foreach (var cardData in CardManager.Instance.hand)
-            {
-                var cardObj = CreateCardUI(cardData);
-                if (cardObj != null)
-                {
-                    cardObj.transform.SetParent(handContainer, false);
-                    displayedCards.Add(cardObj);
-                }
-            }
+            // TODO: 重构为使用BattleManager的hand
+            // if (BattleManager.Instance != null)
+            // {
+            //     foreach (var cardData in BattleManager.Instance.hand)
+            //     {
+            //         var cardObj = CreateCardUI(cardData);
+            //         if (cardObj != null)
+            //         {
+            //             cardObj.transform.SetParent(handContainer, false);
+            //             displayedCards.Add(cardObj);
+            //         }
+            //     }
+            // }
         }
         
         private GameObject CreateCardUI(CardData cardData)
@@ -57,12 +57,12 @@ namespace RuneChronicles
             CreateCardText(cardObj.transform, "Name", cardData.cardName, 
                 new Vector2(0, 0.8f), new Vector2(1, 0.95f), 22, Color.black, FontStyle.Bold);
             
-            // 攻击力
-            CreateCardText(cardObj.transform, "Attack", $"攻击: {cardData.attack}", 
+            // 效果值（使用value代替attack）
+            CreateCardText(cardObj.transform, "Value", $"效果: {cardData.value}", 
                 new Vector2(0, 0.45f), new Vector2(1, 0.65f), 20, Color.red, FontStyle.Bold);
             
-            // 费用
-            CreateCardText(cardObj.transform, "Cost", $"费用: {cardData.manaCost}", 
+            // 费用（使用cost代替manaCost）
+            CreateCardText(cardObj.transform, "Cost", $"费用: {cardData.cost}", 
                 new Vector2(0, 0.15f), new Vector2(1, 0.35f), 18, new Color(0, 0.3f, 0.8f), FontStyle.Normal);
             
             return cardObj;
@@ -102,21 +102,8 @@ namespace RuneChronicles
         
         private void OnCardClicked(CardData cardData)
         {
-            // 检查游戏状态
-            if (GameManager.Instance != null && GameManager.Instance.currentState != GameState.Playing)
-            {
-                Debug.Log("游戏已结束，无法使用卡牌！");
-                return;
-            }
-            
-            if (CardManager.Instance != null)
-            {
-                if (CardManager.Instance.PlayCard(cardData))
-                {
-                    Debug.Log($"使用了卡牌: {cardData.cardName}");
-                    RefreshHand();
-                }
-            }
+            // 暂时禁用，等待重构
+            Debug.Log($"点击了卡牌: {cardData.cardName}（功能待实现）");
         }
     }
 }
