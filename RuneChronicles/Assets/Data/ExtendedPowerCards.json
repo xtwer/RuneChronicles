@@ -1,0 +1,19 @@
+{
+  "cards": [
+    {"cardId": "PWR_003", "cardName": "烈火之心", "cardType": "Power", "rarity": "Rare", "cost": 1, "value": 3, "description": "每次攻击额外造成3点火焰伤害", "flavor": "心中燃烧的火焰"},
+    {"cardId": "PWR_004", "cardName": "冰霜之魂", "cardType": "Power", "rarity": "Rare", "cost": 1, "value": 2, "description": "每次攻击减速敌人", "flavor": "寒冷的灵魂"},
+    {"cardId": "PWR_005", "cardName": "雷霆之势", "cardType": "Power", "rarity": "Rare", "cost": 1, "value": 1, "description": "每打出1张牌，额外造成1点伤害", "flavor": "雷霆万钧"},
+    {"cardId": "PWR_006", "cardName": "生命再生", "cardType": "Power", "rarity": "Rare", "cost": 2, "value": 5, "description": "每回合开始恢复5点生命", "flavor": "生生不息"},
+    {"cardId": "PWR_007", "cardName": "护盾反射", "cardType": "Power", "rarity": "Rare", "cost": 1, "value": 3, "description": "每次获得护盾时，反弹3点伤害", "flavor": "以盾为矛"},
+    {"cardId": "PWR_008", "cardName": "狂暴", "cardType": "Power", "rarity": "Epic", "cost": 2, "value": 5, "description": "每次攻击额外造成5点伤害，每回合失去2点生命", "flavor": "狂暴的力量"},
+    {"cardId": "PWR_009", "cardName": "吸血", "cardType": "Power", "rarity": "Rare", "cost": 1, "value": 30, "description": "攻击恢复30%伤害值的生命", "flavor": "吸取生命"},
+    {"cardId": "PWR_010", "cardName": "荆棘之甲", "cardType": "Power", "rarity": "Rare", "cost": 1, "value": 5, "description": "受到攻击时反弹5点伤害", "flavor": "荆棘丛生"},
+    {"cardId": "PWR_011", "cardName": "元素精通", "cardType": "Power", "rarity": "Epic", "cost": 2, "value": 4, "description": "所有元素伤害+4", "flavor": "掌控元素"},
+    {"cardId": "PWR_012", "cardName": "战斗本能", "cardType": "Power", "rarity": "Rare", "cost": 1, "value": 1, "description": "每回合开始抽1张额外卡牌", "flavor": "本能反应"},
+    {"cardId": "PWR_013", "cardName": "能量涌流", "cardType": "Power", "rarity": "Epic", "cost": 2, "value": 1, "description": "每回合额外获得1点能量", "flavor": "能量充沛"},
+    {"cardId": "PWR_014", "cardName": "暗影祝福", "cardType": "Power", "rarity": "Rare", "cost": 1, "value": 2, "description": "每次抽牌造成2点伤害", "flavor": "黑暗之力"},
+    {"cardId": "PWR_015", "cardName": "圣光庇护", "cardType": "Power", "rarity": "Epic", "cost": 2, "value": 3, "description": "每回合开始获得3点护盾，恢复3点生命", "flavor": "光明守护"},
+    {"cardId": "PWR_016", "cardName": "狂战士", "cardType": "Power", "rarity": "Legendary", "cost": 3, "value": 10, "description": "每次攻击额外造成10点伤害，每次受到攻击+2伤害", "flavor": "疯狂战士"},
+    {"cardId": "PWR_017", "cardName": "不死之身", "cardType": "Power", "rarity": "Legendary", "cost": 3, "value": 50, "description": "生命低于1时不会死亡，回合结束时恢复50%生命（仅触发1次）", "flavor": "死而复生"}
+  ]
+}

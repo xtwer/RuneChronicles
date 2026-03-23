@@ -1,0 +1,29 @@
+{
+  "cards": [
+    {"cardId": "SKL_004", "cardName": "铁壁防御", "cardType": "Skill", "rarity": "Common", "cost": 1, "value": 6, "description": "获得6点护盾", "flavor": "坚固如铁"},
+    {"cardId": "SKL_005", "cardName": "生命药水", "cardType": "Skill", "rarity": "Common", "cost": 1, "value": 5, "description": "恢复5点生命", "flavor": "恢复活力"},
+    {"cardId": "SKL_006", "cardName": "能量涌动", "cardType": "Skill", "rarity": "Rare", "cost": 0, "value": 2, "description": "获得2点能量", "flavor": "能量充盈"},
+    {"cardId": "SKL_007", "cardName": "快速抽牌", "cardType": "Skill", "rarity": "Rare", "cost": 1, "value": 3, "description": "抽3张牌", "flavor": "迅速补充"},
+    {"cardId": "SKL_008", "cardName": "反击姿态", "cardType": "Skill", "rarity": "Rare", "cost": 1, "value": 8, "description": "获得8点护盾，反击伤害", "flavor": "以攻代守"},
+    {"cardId": "SKL_009", "cardName": "闪避", "cardType": "Skill", "rarity": "Common", "cost": 1, "value": 0, "description": "下次攻击无效", "flavor": "灵活躲避"},
+    {"cardId": "SKL_010", "cardName": "治疗术", "cardType": "Skill", "rarity": "Rare", "cost": 2, "value": 12, "description": "恢复12点生命", "flavor": "强效治疗"},
+    {"cardId": "SKL_011", "cardName": "能量护盾", "cardType": "Skill", "rarity": "Rare", "cost": 1, "value": 10, "description": "获得10点护盾", "flavor": "能量屏障"},
+    {"cardId": "SKL_012", "cardName": "深呼吸", "cardType": "Skill", "rarity": "Common", "cost": 1, "value": 4, "description": "获得4点护盾，抽1张牌", "flavor": "调整状态"},
+    {"cardId": "SKL_013", "cardName": "净化", "cardType": "Skill", "rarity": "Rare", "cost": 1, "value": 0, "description": "移除所有负面状态", "flavor": "驱散污秽"},
+    {"cardId": "SKL_014", "cardName": "复原", "cardType": "Skill", "rarity": "Epic", "cost": 2, "value": 15, "description": "恢复15点生命，获得5点护盾", "flavor": "全面恢复"},
+    {"cardId": "SKL_015", "cardName": "魔力充能", "cardType": "Skill", "rarity": "Rare", "cost": 0, "value": 3, "description": "获得3点能量", "flavor": "魔力涌动"},
+    {"cardId": "SKL_016", "cardName": "防御卷曲", "cardType": "Skill", "rarity": "Common", "cost": 2, "value": 12, "description": "获得12点护盾", "flavor": "蜷缩防御"},
+    {"cardId": "SKL_017", "cardName": "生命汲取+", "cardType": "Skill", "rarity": "Rare", "cost": 1, "value": 7, "description": "恢复7点生命", "flavor": "强化汲取"},
+    {"cardId": "SKL_018", "cardName": "战术撤退", "cardType": "Skill", "rarity": "Rare", "cost": 1, "value": 6, "description": "获得6点护盾，抽2张牌", "flavor": "战略转移"},
+    {"cardId": "SKL_019", "cardName": "幽灵形态", "cardType": "Skill", "rarity": "Epic", "cost": 2, "value": 0, "description": "无敌1回合", "flavor": "化为虚体"},
+    {"cardId": "SKL_020", "cardName": "圣光治疗", "cardType": "Skill", "rarity": "Rare", "cost": 2, "value": 10, "description": "恢复10点生命", "flavor": "圣光普照"},
+    {"cardId": "SKL_021", "cardName": "急救", "cardType": "Skill", "rarity": "Common", "cost": 1, "value": 4, "description": "恢复4点生命", "flavor": "紧急处理"},
+    {"cardId": "SKL_022", "cardName": "钢铁之躯", "cardType": "Skill", "rarity": "Rare", "cost": 2, "value": 15, "description": "获得15点护盾", "flavor": "钢铁般坚硬"},
+    {"cardId": "SKL_023", "cardName": "冥想", "cardType": "Skill", "rarity": "Rare", "cost": 1, "value": 5, "description": "恢复5点生命，获得5点护盾", "flavor": "心神宁静"},
+    {"cardId": "SKL_024", "cardName": "活力药剂", "cardType": "Skill", "rarity": "Rare", "cost": 2, "value": 8, "description": "恢复8点生命，获得1点能量", "flavor": "恢复活力"},
+    {"cardId": "SKL_025", "cardName": "精神集中", "cardType": "Skill", "rarity": "Common", "cost": 0, "value": 2, "description": "抽2张牌", "flavor": "集中精神"},
+    {"cardId": "SKL_026", "cardName": "圣盾术", "cardType": "Skill", "rarity": "Epic", "cost": 2, "value": 20, "description": "获得20点护盾", "flavor": "神圣守护"},
+    {"cardId": "SKL_027", "cardName": "生命之泉", "cardType": "Skill", "rarity": "Legendary", "cost": 3, "value": 25, "description": "恢复25点生命", "flavor": "生命源泉"},
+    {"cardId": "SKL_028", "cardName": "绝对防御", "cardType": "Skill", "rarity": "Legendary", "cost": 3, "value": 30, "description": "获得30点护盾", "flavor": "无法穿透"}
+  ]
+}
