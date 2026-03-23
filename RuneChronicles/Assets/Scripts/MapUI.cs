@@ -59,7 +59,54 @@ public class MapUI : MonoBehaviour
         titleText.alignment = TextAlignmentOptions.Center;
         titleText.color = Color.white;
         
+        // 融合按钮（右上角）
+        CreateFusionButton(canvas.transform);
+        
         Debug.Log("[MapUI] 地图UI已创建");
+    }
+    
+    void CreateFusionButton(Transform parent)
+    {
+        var btnObj = new GameObject("FusionButton");
+        btnObj.transform.SetParent(parent, false);
+        
+        var btnRect = btnObj.AddComponent<RectTransform>();
+        btnRect.anchorMin = new Vector2(0.85f, 0.85f);
+        btnRect.anchorMax = new Vector2(0.95f, 0.9f);
+        btnRect.offsetMin = Vector2.zero;
+        btnRect.offsetMax = Vector2.zero;
+        
+        var btnImage = btnObj.AddComponent<Image>();
+        btnImage.color = new Color(0.6f, 0.2f, 0.8f);
+        
+        var button = btnObj.AddComponent<Button>();
+        button.onClick.AddListener(OnOpenFusion);
+        
+        var textObj = new GameObject("Text");
+        textObj.transform.SetParent(btnObj.transform, false);
+        var textRect = textObj.AddComponent<RectTransform>();
+        textRect.anchorMin = Vector2.zero;
+        textRect.anchorMax = Vector2.one;
+        textRect.offsetMin = Vector2.zero;
+        textRect.offsetMax = Vector2.zero;
+        
+        var text = textObj.AddComponent<TextMeshProUGUI>();
+        text.text = "融合";
+        text.fontSize = 24;
+        text.alignment = TextAlignmentOptions.Center;
+        text.color = Color.white;
+    }
+    
+    void OnOpenFusion()
+    {
+        Debug.Log("[MapUI] 打开融合界面");
+        
+        // 销毁地图UI
+        Destroy(gameObject);
+        
+        // 创建融合UI
+        var fusionUIObj = new GameObject("FusionUI");
+        fusionUIObj.AddComponent<FusionUI>();
     }
     
     void UpdateMap()
