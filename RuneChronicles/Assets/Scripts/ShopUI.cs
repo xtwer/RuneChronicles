@@ -203,7 +203,7 @@ public class ShopUI : MonoBehaviour
     
     void CreateShopRelic(Transform parent, string relicId, int index, int total)
     {
-        var relicData = RelicManager.Instance?.GetRelicById(relicId);
+        var relicData = RelicManager.Instance?.GetRelicData(relicId);
         if (relicData == null) return;
         
         var relicObj = new GameObject($"ShopRelic_{index}");

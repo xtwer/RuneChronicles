@@ -412,8 +412,8 @@ public class FusionUI : MonoBehaviour
             // 移除原卡牌
             if (CardManager.Instance != null)
             {
-                CardManager.Instance.RemoveCardFromDeck(selectedCard1.cardId);
-                CardManager.Instance.RemoveCardFromDeck(selectedCard2.cardId);
+                CardManager.Instance.RemoveCardFromDeck(selectedCard1);
+                CardManager.Instance.RemoveCardFromDeck(selectedCard2);
             }
             
             // 更新融合点显示
