@@ -1,0 +1,22 @@
+{
+  "enemies": [
+    {"enemyId": "ENM_004", "enemyName": "暗影刺客", "maxHP": 35, "minDamage": 6, "maxDamage": 9, "behaviorPattern": "Aggressive", "description": "快速攻击型敌人", "flavor": "来无影，去无踪"},
+    {"enemyId": "ENM_005", "enemyName": "岩石守卫", "maxHP": 70, "minDamage": 4, "maxDamage": 6, "behaviorPattern": "Defensive", "description": "高血防御型", "flavor": "坚如磐石"},
+    {"enemyId": "ENM_006", "enemyName": "火焰元素", "maxHP": 40, "minDamage": 7, "maxDamage": 11, "behaviorPattern": "AttackOnly", "description": "高伤害敌人", "flavor": "燃烧一切"},
+    {"enemyId": "ENM_007", "enemyName": "冰霜巨魔", "maxHP": 55, "minDamage": 5, "maxDamage": 8, "behaviorPattern": "AttackDefend", "description": "冰冻攻击", "flavor": "寒冷刺骨"},
+    {"enemyId": "ENM_008", "enemyName": "雷电幽灵", "maxHP": 30, "minDamage": 8, "maxDamage": 12, "behaviorPattern": "Random", "description": "高速敏捷", "flavor": "电光火石"},
+    {"enemyId": "ENM_009", "enemyName": "毒蝎", "maxHP": 25, "minDamage": 4, "maxDamage": 7, "behaviorPattern": "Aggressive", "description": "中毒攻击", "flavor": "毒针致命"},
+    {"enemyId": "ENM_010", "enemyName": "巨型蜘蛛", "maxHP": 45, "minDamage": 6, "maxDamage": 9, "behaviorPattern": "AttackDefend", "description": "蛛网束缚", "flavor": "网罗万物"},
+    {"enemyId": "ENM_011", "enemyName": "骷髅战士", "maxHP": 38, "minDamage": 7, "maxDamage": 10, "behaviorPattern": "AttackOnly", "description": "亡灵战士", "flavor": "不死之躯"},
+    {"enemyId": "ENM_012", "enemyName": "魔法师", "maxHP": 32, "minDamage": 9, "maxDamage": 13, "behaviorPattern": "Random", "description": "施法者", "flavor": "法力涌动"},
+    {"cardId": "ENM_013", "enemyName": "狂战士", "maxHP": 50, "minDamage": 10, "maxDamage": 15, "behaviorPattern": "Aggressive", "description": "狂暴战士", "flavor": "疯狂杀戮"},
+    {"enemyId": "ELITE_001", "enemyName": "暗影领主", "maxHP": 80, "minDamage": 12, "maxDamage": 18, "behaviorPattern": "Random", "description": "精英暗影", "flavor": "暗影主宰"},
+    {"enemyId": "ELITE_002", "enemyName": "火焰巨人", "maxHP": 100, "minDamage": 10, "maxDamage": 15, "behaviorPattern": "AttackDefend", "description": "精英火焰", "flavor": "烈焰焚天"},
+    {"enemyId": "ELITE_003", "enemyName": "冰霜巨龙", "maxHP": 90, "minDamage": 11, "maxDamage": 16, "behaviorPattern": "AttackDefend", "description": "精英冰龙", "flavor": "冰封万里"},
+    {"enemyId": "ELITE_004", "enemyName": "雷霆泰坦", "maxHP": 85, "minDamage": 13, "maxDamage": 19, "behaviorPattern": "Aggressive", "description": "精英雷电", "flavor": "雷霆万钧"},
+    {"enemyId": "ELITE_005", "enemyName": "黑暗骑士", "maxHP": 95, "minDamage": 12, "maxDamage": 17, "behaviorPattern": "Random", "description": "精英骑士", "flavor": "黑暗降临"},
+    {"enemyId": "BOSS_001", "enemyName": "符文守护者", "maxHP": 200, "minDamage": 15, "maxDamage": 25, "behaviorPattern": "Random", "description": "第5层BOSS", "flavor": "守护符文之力"},
+    {"enemyId": "BOSS_002", "enemyName": "元素之王", "maxHP": 300, "minDamage": 18, "maxDamage": 30, "behaviorPattern": "Random", "description": "第10层BOSS", "flavor": "掌控元素"},
+    {"enemyId": "BOSS_003", "enemyName": "黑暗君主", "maxHP": 400, "minDamage": 20, "maxDamage": 35, "behaviorPattern": "Random", "description": "第15层BOSS（终极）", "flavor": "黑暗统治者"}
+  ]
+}
