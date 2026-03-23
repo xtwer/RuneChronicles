@@ -359,7 +359,7 @@ public class ShopUI : MonoBehaviour
         
         if (GameManager.Instance.currentGold >= CARD_PRICE)
         {
-            GameManager.Instance.RemoveGold(CARD_PRICE);
+            GameManager.Instance.SpendGold(CARD_PRICE);
             CardManager.Instance.AddCardToDeck(card.cardId);
             
             Debug.Log($"[ShopUI] 购买卡牌: {card.cardName}");
@@ -380,7 +380,7 @@ public class ShopUI : MonoBehaviour
         
         if (GameManager.Instance.currentGold >= RELIC_PRICE)
         {
-            GameManager.Instance.RemoveGold(RELIC_PRICE);
+            GameManager.Instance.SpendGold(RELIC_PRICE);
             RelicManager.Instance.AddRelic(relicId);
             
             Debug.Log($"[ShopUI] 购买遗物: {relicId}");
@@ -409,7 +409,7 @@ public class ShopUI : MonoBehaviour
             {
                 string removedCard = deck[0];
                 CardManager.Instance.RemoveCardFromDeck(removedCard);
-                GameManager.Instance.RemoveGold(REMOVE_PRICE);
+                GameManager.Instance.SpendGold(REMOVE_PRICE);
                 
                 Debug.Log($"[ShopUI] 已移除卡牌: {removedCard}");
             }
