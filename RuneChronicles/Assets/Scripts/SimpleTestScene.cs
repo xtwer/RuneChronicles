@@ -122,12 +122,14 @@ namespace RuneChronicles
             // 创建管理器
             var gmObj = new GameObject("GameManager");
             var gm = gmObj.AddComponent<GameManager>();
-            gm.currentEnemy = Resources.Load<EnemyData>("Enemies/Slime");
+            // 注意：新版GameManager不再有currentEnemy属性
+            // gm.currentEnemy = Resources.Load<EnemyData>("Enemies/Slime");
             
             var cmObj = new GameObject("CardManager");
             var cm = cmObj.AddComponent<CardManager>();
-            cm.allCards.Add(Resources.Load<CardData>("Cards/Fire"));
-            cm.allCards.Add(Resources.Load<CardData>("Cards/Ice"));
+            // 注意：新版CardManager从JSON自动加载，不需要手动添加
+            // cm.allCards.Add(Resources.Load<CardData>("Cards/Fire"));
+            // cm.allCards.Add(Resources.Load<CardData>("Cards/Ice"));
             
             var fsObj = new GameObject("FusionSystem");
             var fs = fsObj.AddComponent<FusionSystem>();
