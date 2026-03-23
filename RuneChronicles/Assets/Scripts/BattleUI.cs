@@ -72,6 +72,8 @@ public class BattleUI : MonoBehaviour
             var scaler = canvasObj.AddComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1920, 1080);
+            scaler.matchWidthOrHeight = 0.5f;
+            scaler.matchWidthOrHeight = 0.5f; // 宽高混合匹配
             canvasObj.AddComponent<GraphicRaycaster>();
         }
         
@@ -288,6 +290,7 @@ public class BattleUI : MonoBehaviour
         btnText.fontSize = 24;
         btnText.alignment = TextAnchor.MiddleCenter;
         btnText.color = Color.white;
+        btnText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
     }
     
     // 事件处理
@@ -361,6 +364,7 @@ public class BattleUI : MonoBehaviour
         nameText.fontSize = 18;
         nameText.alignment = TextAnchor.MiddleCenter;
         nameText.color = Color.black;
+        nameText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         
         // 费用
         var costObj = new GameObject("Cost");
@@ -377,6 +381,7 @@ public class BattleUI : MonoBehaviour
         costText.fontStyle = FontStyle.Bold;
         costText.alignment = TextAnchor.MiddleCenter;
         costText.color = new Color(0, 0.3f, 0.8f);
+        costText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         
         // 效果值
         var valueObj = new GameObject("Value");
@@ -393,6 +398,7 @@ public class BattleUI : MonoBehaviour
         valueText.fontStyle = FontStyle.Bold;
         valueText.alignment = TextAnchor.MiddleCenter;
         valueText.color = Color.red;
+        valueText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         
         // 添加拖拽功能
         var dragger = cardObj.AddComponent<CardDragger>();
