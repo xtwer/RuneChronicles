@@ -98,10 +98,10 @@ public class BattleUI : MonoBehaviour
         playerPanel.transform.SetParent(parent, false);
         
         var rect = playerPanel.AddComponent<RectTransform>();
-        rect.anchorMin = new Vector2(0, 0);
-        rect.anchorMax = new Vector2(0.3f, 0.15f);
-        rect.offsetMin = new Vector2(20, 20);
-        rect.offsetMax = new Vector2(-20, -20);
+        rect.anchorMin = new Vector2(0.05f, 0.05f);
+        rect.anchorMax = new Vector2(0.25f, 0.25f);
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
         
         var bg = playerPanel.AddComponent<Image>();
         bg.color = new Color(0.1f, 0.1f, 0.1f, 0.8f);
@@ -191,8 +191,8 @@ public class BattleUI : MonoBehaviour
         enemyPanel.transform.SetParent(parent, false);
         
         var rect = enemyPanel.AddComponent<RectTransform>();
-        rect.anchorMin = new Vector2(0.2f, 0.6f);
-        rect.anchorMax = new Vector2(0.8f, 0.9f);
+        rect.anchorMin = new Vector2(0.25f, 0.65f);
+        rect.anchorMax = new Vector2(0.75f, 0.95f);
         rect.offsetMin = Vector2.zero;
         rect.offsetMax = Vector2.zero;
         
@@ -209,11 +209,10 @@ public class BattleUI : MonoBehaviour
         handPanel.transform.SetParent(parent, false);
         
         var rect = handPanel.AddComponent<RectTransform>();
-        rect.anchorMin = new Vector2(0.2f, 0);
-        rect.anchorMax = new Vector2(0.8f, 0.3f);
-        rect.offsetMin = new Vector2(0, 20);
-        rect.offsetMax = new Vector2(0, -20);
-        
+        rect.anchorMin = new Vector2(0.25f, 0.05f);
+        rect.anchorMax = new Vector2(0.75f, 0.35f);
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;        
         var layout = handPanel.AddComponent<HorizontalLayoutGroup>();
         layout.spacing = 10;
         layout.childAlignment = TextAnchor.LowerCenter;
@@ -227,10 +226,10 @@ public class BattleUI : MonoBehaviour
         buttonPanel.transform.SetParent(parent, false);
         
         var rect = buttonPanel.AddComponent<RectTransform>();
-        rect.anchorMin = new Vector2(0.85f, 0);
-        rect.anchorMax = new Vector2(1, 0.2f);
-        rect.offsetMin = new Vector2(-20, 20);
-        rect.offsetMax = new Vector2(-20, -20);
+        rect.anchorMin = new Vector2(0.80f, 0.05f);
+        rect.anchorMax = new Vector2(0.95f, 0.25f);
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
         
         // 能量显示
         var energyObj = new GameObject("EnergyText");
