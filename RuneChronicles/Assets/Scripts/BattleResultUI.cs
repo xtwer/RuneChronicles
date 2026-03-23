@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UI;
 
 /// <summary>
 /// 战斗结算UI - 显示胜利/失败
@@ -9,10 +8,16 @@ public class BattleResultUI : MonoBehaviour
 {
     public bool isVictory;
     
-    void Start()
+    private bool initialized = false;
+
+    public void Init()
     {
+        if (initialized) return;
+        initialized = true;
         CreateResultUI();
     }
+
+    void Start() { Init(); }
     
     void CreateResultUI()
     {
@@ -29,7 +34,11 @@ public class BattleResultUI : MonoBehaviour
             scaler.matchWidthOrHeight = 0.5f;
             canvasObj.AddComponent<GraphicRaycaster>();
         }
-        
+
+        // 清除旧UI内容
+        for (int i = canvas.transform.childCount - 1; i >= 0; i--)
+            DestroyImmediate(canvas.transform.GetChild(i).gameObject);
+
         // 半透明背景
         var bgObj = new GameObject("Background");
         bgObj.transform.SetParent(canvas.transform, false);
@@ -67,11 +76,13 @@ public class BattleResultUI : MonoBehaviour
         titleText.fontStyle = FontStyle.Bold;
         titleText.alignment = TextAnchor.MiddleCenter;
         titleText.color = Color.white;
+        titleText.font = ChineseUI.GetChineseFont();
         
         // 按钮
         if (isVictory)
         {
-            CreateButton(panelObj.transform, "继续", new Vector2(0, -50), OnContinue);
+            CreateButton(panelObj.transform, "继续冒险", new Vector2(-170, -50), OnContinue);
+            CreateButton(panelObj.transform, "返回主菜单", new Vector2(170, -50), OnGameOver);
         }
         else
         {
@@ -112,6 +123,7 @@ public class BattleResultUI : MonoBehaviour
         tmp.fontSize = 36;
         tmp.alignment = TextAnchor.MiddleCenter;
         tmp.color = Color.white;
+        tmp.font = ChineseUI.GetChineseFont();
     }
     
     void OnContinue()
@@ -123,22 +135,26 @@ public class BattleResultUI : MonoBehaviour
         
         // 显示奖励UI
         var rewardObj = new GameObject("RewardUI");
-        rewardObj.AddComponent<RewardUI>();
+        rewardObj.AddComponent<RewardUI>().Init();
     }
     
     void OnGameOver()
     {
         Debug.Log("[BattleResultUI] 游戏结束 - 返回主菜单");
-        
-        // 清理所有战斗相关
+
+        // 清理所有战斗相关UI及Canvas
         var battleUI = FindObjectOfType<BattleUI>();
         if (battleUI != null) Destroy(battleUI.gameObject);
-        
+
+        // 销毁当前Canvas（避免残留叠加到主菜单上）
+        var canvas = FindObjectOfType<Canvas>();
+        if (canvas != null) Destroy(canvas.gameObject);
+
         // 销毁结算UI
         Destroy(gameObject);
-        
+
         // 返回主菜单
         var menuObj = new GameObject("MainMenuUI");
-        menuObj.AddComponent<MainMenuUI>();
+        menuObj.AddComponent<MainMenuUI_Chinese>().Init();
     }
 }

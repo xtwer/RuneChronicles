@@ -8,10 +8,16 @@ public class CharacterSelectUI : MonoBehaviour
 {
     private Canvas canvas;
     
-    void Start()
+    private bool initialized = false;
+
+    public void Init()
     {
+        if (initialized) return;
+        initialized = true;
         CreateCharacterSelect();
     }
+
+    void Start() { Init(); }
     
     void CreateCharacterSelect()
     {
@@ -26,10 +32,13 @@ public class CharacterSelectUI : MonoBehaviour
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1920, 1080);
             scaler.matchWidthOrHeight = 0.5f;
-            scaler.matchWidthOrHeight = 0.5f;
             canvasObj.AddComponent<GraphicRaycaster>();
         }
-        
+
+        // 清除旧UI内容
+        for (int i = canvas.transform.childCount - 1; i >= 0; i--)
+            DestroyImmediate(canvas.transform.GetChild(i).gameObject);
+
         // 背景
         var bgObj = new GameObject("Background");
         bgObj.transform.SetParent(canvas.transform, false);
@@ -151,15 +160,12 @@ public class CharacterSelectUI : MonoBehaviour
             GameManager.Instance.StartNewRun(charClass);
         }
         
-        // 先记录canvas引用
-        var canvasToKeep = canvas;
-        
-        // 销毁角色选择UI（但保留Canvas）
+        // 销毁角色选择UI
         Destroy(gameObject);
         
         // 创建地图UI（使用同一个Canvas）
         var mapUIObj = new GameObject("MapUI");
-        mapUIObj.AddComponent<MapUI>();
+        mapUIObj.AddComponent<MapUI>().Init();
     }
     
     void OnBack()
@@ -171,6 +177,6 @@ public class CharacterSelectUI : MonoBehaviour
         
         // 重新创建主菜单
         var menuObj = new GameObject("MainMenuUI");
-        menuObj.AddComponent<MainMenuUI_Chinese>();
+        menuObj.AddComponent<MainMenuUI_Chinese>().Init();
     }
 }

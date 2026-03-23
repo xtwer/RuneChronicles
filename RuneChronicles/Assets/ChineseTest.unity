@@ -761,7 +761,7 @@ MonoBehaviour:
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 48
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -1836,15 +1836,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc4114d954fc64b59a1d2381a499bb6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allCards:
-  - {fileID: 11400000, guid: 202179ec3fe174cb0a7e8fa98f8469d5, type: 2}
-  - {fileID: 11400000, guid: 222e1a04639674c8384982536f41d98d, type: 2}
-  - {fileID: 11400000, guid: 1ceb1ea6446484366aae6f53fb78d6f7, type: 2}
-  deck: []
-  hand: []
-  discard: []
-  maxHandSize: 7
-  drawPerTurn: 3
+  playerDeck: []
 --- !u!4 &1243927883
 Transform:
   m_ObjectHideFlags: 0
@@ -1890,13 +1882,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 0
-  playerHealth: 20
-  maxMana: 10
-  currentMana: 10
-  currentEnemy: {fileID: 11400000, guid: aca62e1439cce40eeb3d55da3dfd64a6, type: 2}
-  turnCount: 0
-  cardsPlayedThisTurn: 0
-  maxCardsPerTurn: 1
+  currentGold: 0
+  currentRun: 1
+  difficulty: 1
 --- !u!4 &1251818705
 Transform:
   m_ObjectHideFlags: 0

@@ -173,9 +173,15 @@ public class DebugManager : MonoBehaviour
 
         if (int.TryParse(parts[1], out int hp))
         {
-            // TODO: 实际设置玩家HP（需要GameManager/BattleManager）
-            LogToConsole($"✓ 玩家HP设置为: {hp}");
-            Debug.Log($"[DEBUG] 设置玩家HP: {hp}");
+            if (Player.Instance != null)
+            {
+                Player.Instance.DEBUG_SetHP(hp);
+                LogToConsole($"✓ 玩家HP设置为: {hp}");
+            }
+            else
+            {
+                LogToConsole("错误: Player未初始化");
+            }
         }
         else
         {
@@ -197,9 +203,15 @@ public class DebugManager : MonoBehaviour
 
         if (int.TryParse(parts[1], out int energy))
         {
-            // TODO: 实际设置玩家能量（需要BattleManager）
-            LogToConsole($"✓ 玩家能量设置为: {energy}");
-            Debug.Log($"[DEBUG] 设置玩家能量: {energy}");
+            if (BattleManager.Instance != null)
+            {
+                BattleManager.Instance.SetEnergy(energy);
+                LogToConsole($"✓ 玩家能量设置为: {energy}");
+            }
+            else
+            {
+                LogToConsole("错误: BattleManager未初始化（需在战斗中使用）");
+            }
         }
         else
         {
@@ -220,9 +232,23 @@ public class DebugManager : MonoBehaviour
         }
 
         string cardId = parts[1].ToUpper();
-        // TODO: 实际添加卡牌（需要CardManager）
-        LogToConsole($"✓ 添加卡牌: {cardId}");
-        Debug.Log($"[DEBUG] 添加卡牌: {cardId}");
+        if (CardManager.Instance != null && BattleManager.Instance != null)
+        {
+            var card = CardManager.Instance.GetCard(cardId);
+            if (card != null)
+            {
+                BattleManager.Instance.DEBUG_AddCard(card);
+                LogToConsole($"✓ 添加卡牌: {card.cardName}");
+            }
+            else
+            {
+                LogToConsole($"错误: 找不到卡牌 {cardId}");
+            }
+        }
+        else
+        {
+            LogToConsole("错误: CardManager或BattleManager未初始化");
+        }
     }
 
     /// <summary>
@@ -239,9 +265,23 @@ public class DebugManager : MonoBehaviour
 
         if (int.TryParse(parts[1], out int index))
         {
-            // TODO: 实际杀死敌人（需要EnemyManager）
-            LogToConsole($"✓ 杀死敌人 #{index}");
-            Debug.Log($"[DEBUG] 杀死敌人: {index}");
+            if (BattleManager.Instance != null)
+            {
+                var enemies = BattleManager.Instance.GetAliveEnemies();
+                if (index >= 0 && index < enemies.Count)
+                {
+                    enemies[index].TakeDamage(enemies[index].currentHP);
+                    LogToConsole($"✓ 杀死敌人 #{index}");
+                }
+                else
+                {
+                    LogToConsole($"错误: 没有索引为 {index} 的存活敌人");
+                }
+            }
+            else
+            {
+                LogToConsole("错误: BattleManager未初始化（需在战斗中使用）");
+            }
         }
         else
         {
@@ -255,9 +295,15 @@ public class DebugManager : MonoBehaviour
     /// </summary>
     private void DebugWinBattle()
     {
-        // TODO: 实际结束战斗（需要BattleManager）
-        LogToConsole("✓ 战斗胜利！");
-        Debug.Log("[DEBUG] 强制胜利");
+        if (BattleManager.Instance != null)
+        {
+            BattleManager.Instance.DEBUG_Win();
+            LogToConsole("✓ 战斗胜利！");
+        }
+        else
+        {
+            LogToConsole("错误: BattleManager未初始化（需在战斗中使用）");
+        }
     }
 
     #endregion

@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -76,21 +77,18 @@ public class Player : MonoBehaviour
         }
         
         // 扣除生命值
+        currentHP -= actualDamage;
+        currentHP = Mathf.Max(0, currentHP);
+
         if (actualDamage > 0)
-        {
-            currentHP -= actualDamage;
-            currentHP = Mathf.Max(0, currentHP);
-            
             Debug.Log($"[Player] 受到 {actualDamage} 点伤害，剩余HP: {currentHP}/{maxHP}");
-            
-            OnTakeDamage?.Invoke(actualDamage);
-            OnHPChanged?.Invoke(currentHP, maxHP);
-            
-            // 检查死亡
-            if (currentHP <= 0)
-            {
-                Die();
-            }
+
+        OnTakeDamage?.Invoke(actualDamage);
+        OnHPChanged?.Invoke(currentHP, maxHP); // 无论是否扣血都触发，让UI刷新护盾显示
+
+        if (currentHP <= 0 && actualDamage > 0)
+        {
+            Die();
         }
     }
     

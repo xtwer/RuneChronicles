@@ -38,11 +38,6 @@ public class MapManager : MonoBehaviour
         }
     }
     
-    void Start()
-    {
-        GenerateMap();
-    }
-    
     #region 地图生成
     
     /// <summary>
@@ -78,43 +73,51 @@ public class MapManager : MonoBehaviour
         {
             floor = floor,
             nodeIndex = index,
-            nodeType = DetermineNodeType(floor)
+            nodeType = DetermineNodeType(floor, index)
         };
-        
+
         return node;
     }
-    
+
     /// <summary>
-    /// 决定节点类型
+    /// 决定节点类型 - 同一层三个节点有不同选择
     /// </summary>
-    private MapNodeType DetermineNodeType(int floor)
+    private MapNodeType DetermineNodeType(int floor, int index)
     {
-        // BOSS层（第5、10、15层）
-        if ((floor + 1) % 5 == 0)
-        {
+        int floorMod = (floor + 1) % 5;
+
+        // BOSS层（第5、10、15层）- 全部BOSS
+        if (floorMod == 0)
             return MapNodeType.Boss;
-        }
-        
-        // 精英层（第4、9、14层）
-        if ((floor + 1) % 5 == 4)
+
+        // 精英层（第4、9、14层）- 至少一个精英，其余战斗/宝箱
+        if (floorMod == 4)
         {
-            return MapNodeType.Elite;
-        }
-        
-        // 商店层（第3、8、13层）
-        if ((floor + 1) % 5 == 3)
-        {
-            return MapNodeType.Shop;
-        }
-        
-        // 宝箱层（第2、7、12层）
-        if ((floor + 1) % 5 == 2)
-        {
+            if (index == 0) return MapNodeType.Elite;
+            if (index == 1) return MapNodeType.Battle;
             return MapNodeType.Treasure;
         }
-        
-        // 其他层为普通战斗
-        return MapNodeType.Battle;
+
+        // 商店层（第3、8、13层）- 商店 / 战斗 / 宝箱
+        if (floorMod == 3)
+        {
+            if (index == 0) return MapNodeType.Shop;
+            if (index == 1) return MapNodeType.Battle;
+            return MapNodeType.Treasure;
+        }
+
+        // 宝箱层（第2、7、12层）- 宝箱 / 战斗 / 商店
+        if (floorMod == 2)
+        {
+            if (index == 0) return MapNodeType.Treasure;
+            if (index == 1) return MapNodeType.Battle;
+            return MapNodeType.Shop;
+        }
+
+        // 战斗层（第1、6、11层）- 混合：战斗 / 宝箱 / 商店
+        if (index == 0) return MapNodeType.Battle;
+        if (index == 1) return UnityEngine.Random.value < 0.5f ? MapNodeType.Treasure : MapNodeType.Battle;
+        return UnityEngine.Random.value < 0.5f ? MapNodeType.Shop : MapNodeType.Battle;
     }
     
     #endregion
@@ -276,7 +279,10 @@ public class MapManager : MonoBehaviour
                 // 融合点
                 int fusionPoints = UnityEngine.Random.Range(1, 3);
                 Debug.Log($"[MapManager] 获得 {fusionPoints} 融合点");
-                FusionManager.Instance.GainFusionPoints(fusionPoints);
+                if (FusionManager.Instance != null)
+                {
+                    FusionManager.Instance.GainFusionPoints(fusionPoints);
+                }
                 break;
         }
     }

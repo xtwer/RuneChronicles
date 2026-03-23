@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UI;
 
 /// <summary>
 /// 主菜单UI

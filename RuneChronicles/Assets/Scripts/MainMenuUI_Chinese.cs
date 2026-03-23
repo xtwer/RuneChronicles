@@ -6,10 +6,16 @@ using UnityEngine.UI;
 /// </summary>
 public class MainMenuUI_Chinese : MonoBehaviour
 {
-    void Start()
+    private bool initialized = false;
+
+    public void Init()
     {
+        if (initialized) return;
+        initialized = true;
         CreateMainMenu();
     }
+
+    void Start() { Init(); }
     
     void CreateMainMenu()
     {
@@ -23,9 +29,14 @@ public class MainMenuUI_Chinese : MonoBehaviour
             var scaler = canvasObj.AddComponent<CanvasScaler>();
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1920, 1080);
+            scaler.matchWidthOrHeight = 0.5f;
             canvasObj.AddComponent<GraphicRaycaster>();
         }
-        
+
+        // 清除旧UI内容
+        for (int i = canvas.transform.childCount - 1; i >= 0; i--)
+            DestroyImmediate(canvas.transform.GetChild(i).gameObject);
+
         // 背景
         var bgObj = new GameObject("Background");
         bgObj.transform.SetParent(canvas.transform, false);
@@ -123,12 +134,14 @@ public class MainMenuUI_Chinese : MonoBehaviour
         
         // 创建角色选择UI
         var charSelectObj = new GameObject("CharacterSelectUI");
-        charSelectObj.AddComponent<CharacterSelectUI>();
+        charSelectObj.AddComponent<CharacterSelectUI>().Init();
     }
     
     void OnSettings()
     {
-        Debug.Log("[MainMenuUI] 设置（未实现）");
+        Debug.Log("[MainMenuUI] 打开设置");
+        var settingsObj = new GameObject("SettingsUI");
+        settingsObj.AddComponent<SettingsUI>();
     }
     
     void OnQuitGame()

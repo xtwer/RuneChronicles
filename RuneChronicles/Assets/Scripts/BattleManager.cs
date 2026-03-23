@@ -44,6 +44,7 @@ public class BattleManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -202,8 +203,13 @@ public class BattleManager : MonoBehaviour
             return true;
         }
         
-        // TODO: 玩家死亡检查（需要Player类）
-        
+        // 玩家死亡 -> 战斗失败
+        if (Player.Instance != null && Player.Instance.isDead)
+        {
+            Debug.Log("[BattleManager] 玩家死亡，战斗失败！");
+            return true;
+        }
+
         return false;
     }
 
@@ -314,19 +320,25 @@ public class BattleManager : MonoBehaviour
         
         // 消耗能量
         SpendEnergy(card.cost);
-        
+
         // 从手牌移除
         hand.Remove(card);
-        
+
         // 执行卡牌效果
         ExecuteCardEffect(card, target);
-        
+
         // 放入弃牌堆
         discardPile.Add(card);
-        
+
         Debug.Log($"[BattleManager] 打出卡牌: {card.cardName}");
-        OnCardPlayed?.Invoke(card);
-        
+        OnCardPlayed?.Invoke(card); // UI先刷新，让玩家看到最后的血量变化
+
+        // 打出攻击牌后立即检查战斗是否结束（敌人全灭）
+        if (CheckBattleEnd())
+        {
+            EndBattle();
+        }
+
         return true;
     }
 
@@ -455,12 +467,20 @@ public class BattleManager : MonoBehaviour
     {
         foreach (var enemy in enemies)
         {
-            if (enemy != null)
+            if (enemy != null && enemy.currentHP > 0)
             {
-                enemy.currentHP = 0;
+                enemy.TakeDamage(enemy.currentHP);
             }
         }
         EndBattle();
+    }
+
+    /// <summary>
+    /// 获取当前手牌（供UI读取）
+    /// </summary>
+    public List<CardData> GetHand()
+    {
+        return new List<CardData>(hand);
     }
 
     /// <summary>

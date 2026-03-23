@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UI;
 using System.Collections.Generic;
 
 /// <summary>
@@ -10,11 +9,17 @@ public class RewardUI : MonoBehaviour
 {
     private List<CardData> rewardCards = new List<CardData>();
     
-    void Start()
+    private bool initialized = false;
+
+    public void Init()
     {
+        if (initialized) return;
+        initialized = true;
         GenerateRewards();
         CreateRewardUI();
     }
+
+    void Start() { Init(); }
     
     void GenerateRewards()
     {
@@ -23,10 +28,12 @@ public class RewardUI : MonoBehaviour
         // 随机3张卡作为奖励
         var allCards = CardManager.Instance.GetAllCards();
         
-        for (int i = 0; i < 3 && i < allCards.Count; i++)
+        var pool = new List<CardData>(allCards);
+        for (int i = 0; i < 3 && pool.Count > 0; i++)
         {
-            int randomIndex = Random.Range(0, allCards.Count);
-            rewardCards.Add(allCards[randomIndex]);
+            int randomIndex = Random.Range(0, pool.Count);
+            rewardCards.Add(pool[randomIndex]);
+            pool.RemoveAt(randomIndex);
         }
         
         Debug.Log($"[RewardUI] 生成 {rewardCards.Count} 张奖励卡");
@@ -47,7 +54,11 @@ public class RewardUI : MonoBehaviour
             scaler.matchWidthOrHeight = 0.5f;
             canvasObj.AddComponent<GraphicRaycaster>();
         }
-        
+
+        // 清除旧UI内容
+        for (int i = canvas.transform.childCount - 1; i >= 0; i--)
+            DestroyImmediate(canvas.transform.GetChild(i).gameObject);
+
         // 背景
         var bgObj = new GameObject("Background");
         bgObj.transform.SetParent(canvas.transform, false);
@@ -74,6 +85,7 @@ public class RewardUI : MonoBehaviour
         titleText.fontStyle = FontStyle.Bold;
         titleText.alignment = TextAnchor.MiddleCenter;
         titleText.color = Color.white;
+        titleText.font = ChineseUI.GetChineseFont();
         
         // 显示奖励卡牌
         for (int i = 0; i < rewardCards.Count; i++)
@@ -125,7 +137,8 @@ public class RewardUI : MonoBehaviour
         nameText.fontStyle = FontStyle.Bold;
         nameText.alignment = TextAnchor.MiddleCenter;
         nameText.color = Color.black;
-        
+        nameText.font = ChineseUI.GetChineseFont();
+
         // 描述
         var descObj = new GameObject("Description");
         descObj.transform.SetParent(cardObj.transform, false);
@@ -134,12 +147,13 @@ public class RewardUI : MonoBehaviour
         descRect.anchorMax = new Vector2(0.9f, 0.7f);
         descRect.offsetMin = Vector2.zero;
         descRect.offsetMax = Vector2.zero;
-        
+
         var descText = descObj.AddComponent<Text>();
         descText.text = $"费用: {card.cost}\n效果: {card.value}\n\n{card.description}";
         descText.fontSize = 16;
         descText.alignment = TextAnchor.UpperLeft;
         descText.color = Color.black;
+        descText.font = ChineseUI.GetChineseFont();
     }
     
     void CreateSkipButton(Transform parent)
@@ -173,6 +187,7 @@ public class RewardUI : MonoBehaviour
         text.fontSize = 32;
         text.alignment = TextAnchor.MiddleCenter;
         text.color = Color.white;
+        text.font = ChineseUI.GetChineseFont();
     }
     
     Color GetCardColor(CardRarity rarity)
@@ -220,6 +235,6 @@ public class RewardUI : MonoBehaviour
         
         // 显示地图
         var mapObj = new GameObject("MapUI");
-        mapObj.AddComponent<MapUI>();
+        mapObj.AddComponent<MapUI>().Init();
     }
 }

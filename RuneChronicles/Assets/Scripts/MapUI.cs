@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UI;
 using System.Collections.Generic;
 
 /// <summary>
@@ -11,11 +10,17 @@ public class MapUI : MonoBehaviour
     private Canvas canvas;
     private List<Button> nodeButtons = new List<Button>();
     
-    void Start()
+    private bool initialized = false;
+
+    public void Init()
     {
+        if (initialized) return;
+        initialized = true;
         CreateMapUI();
         UpdateMap();
     }
+
+    void Start() { Init(); }
     
     void CreateMapUI()
     {
@@ -32,7 +37,11 @@ public class MapUI : MonoBehaviour
             scaler.matchWidthOrHeight = 0.5f;
             canvasObj.AddComponent<GraphicRaycaster>();
         }
-        
+
+        // 清除旧UI内容
+        for (int i = canvas.transform.childCount - 1; i >= 0; i--)
+            DestroyImmediate(canvas.transform.GetChild(i).gameObject);
+
         // 背景
         var bgObj = new GameObject("Background");
         bgObj.transform.SetParent(canvas.transform, false);
@@ -53,19 +62,62 @@ public class MapUI : MonoBehaviour
         titleRect.offsetMin = Vector2.zero;
         titleRect.offsetMax = Vector2.zero;
         
+        int floor = MapManager.Instance != null ? MapManager.Instance.currentFloor + 1 : 1;
+        int total = MapManager.Instance != null ? MapManager.Instance.totalFloors : 15;
         var titleText = titleObj.AddComponent<Text>();
-        titleText.text = "选择你的路径";
-        titleText.fontSize = 48;
+        titleText.text = $"选择你的路径  第{floor}/{total}层";
+        titleText.fontSize = 44;
         titleText.fontStyle = FontStyle.Bold;
         titleText.alignment = TextAnchor.MiddleCenter;
         titleText.color = Color.white;
+        titleText.font = ChineseUI.GetChineseFont();
         
         // 融合按钮（右上角）
         CreateFusionButton(canvas.transform);
-        
+
+        // 返回主菜单按钮（左上角）
+        CreateMainMenuButton(canvas.transform);
+
         Debug.Log("[MapUI] 地图UI已创建");
     }
     
+    void CreateMainMenuButton(Transform parent)
+    {
+        var btnObj = new GameObject("MainMenuButton");
+        btnObj.transform.SetParent(parent, false);
+        var btnRect = btnObj.AddComponent<RectTransform>();
+        btnRect.anchorMin = new Vector2(0.02f, 0.85f);
+        btnRect.anchorMax = new Vector2(0.14f, 0.92f);
+        btnRect.offsetMin = Vector2.zero;
+        btnRect.offsetMax = Vector2.zero;
+        btnObj.AddComponent<Image>().color = new Color(0.35f, 0.35f, 0.35f);
+        btnObj.AddComponent<Button>().onClick.AddListener(OnReturnToMainMenu);
+
+        var textObj = new GameObject("Text");
+        textObj.transform.SetParent(btnObj.transform, false);
+        var textRect = textObj.AddComponent<RectTransform>();
+        textRect.anchorMin = Vector2.zero;
+        textRect.anchorMax = Vector2.one;
+        textRect.offsetMin = Vector2.zero;
+        textRect.offsetMax = Vector2.zero;
+        var text = textObj.AddComponent<Text>();
+        text.text = "主菜单";
+        text.fontSize = 24;
+        text.alignment = TextAnchor.MiddleCenter;
+        text.color = Color.white;
+        text.font = ChineseUI.GetChineseFont();
+    }
+
+    void OnReturnToMainMenu()
+    {
+        Debug.Log("[MapUI] 返回主菜单");
+        Destroy(gameObject);
+        var canvas = FindObjectOfType<Canvas>();
+        if (canvas != null) Destroy(canvas.gameObject);
+        var menuObj = new GameObject("MainMenuUI");
+        menuObj.AddComponent<MainMenuUI_Chinese>().Init();
+    }
+
     void CreateFusionButton(Transform parent)
     {
         var btnObj = new GameObject("FusionButton");
@@ -96,6 +148,7 @@ public class MapUI : MonoBehaviour
         text.fontSize = 24;
         text.alignment = TextAnchor.MiddleCenter;
         text.color = Color.white;
+        text.font = ChineseUI.GetChineseFont();
     }
     
     void OnOpenFusion()
@@ -107,7 +160,7 @@ public class MapUI : MonoBehaviour
         
         // 创建融合UI
         var fusionUIObj = new GameObject("FusionUI");
-        fusionUIObj.AddComponent<FusionUI>();
+        fusionUIObj.AddComponent<FusionUI>().Init();
     }
     
     void UpdateMap()
@@ -170,7 +223,23 @@ public class MapUI : MonoBehaviour
         text.fontStyle = FontStyle.Bold;
         text.alignment = TextAnchor.MiddleCenter;
         text.color = Color.white;
-        
+        text.font = ChineseUI.GetChineseFont();
+
+        // 节点描述副标题
+        var subObj = new GameObject("SubText");
+        subObj.transform.SetParent(btnObj.transform, false);
+        var subRect = subObj.AddComponent<RectTransform>();
+        subRect.anchorMin = new Vector2(0, 0);
+        subRect.anchorMax = new Vector2(1, 0.3f);
+        subRect.offsetMin = Vector2.zero;
+        subRect.offsetMax = Vector2.zero;
+        var subText = subObj.AddComponent<Text>();
+        subText.text = GetNodeSubText(node.nodeType);
+        subText.fontSize = 18;
+        subText.alignment = TextAnchor.MiddleCenter;
+        subText.color = new Color(1f, 1f, 1f, 0.8f);
+        subText.font = ChineseUI.GetChineseFont();
+
         nodeButtons.Add(button);
     }
     
@@ -187,6 +256,19 @@ public class MapUI : MonoBehaviour
         }
     }
     
+    string GetNodeSubText(MapNodeType nodeType)
+    {
+        switch (nodeType)
+        {
+            case MapNodeType.Battle: return "击败敌人\n获得奖励";
+            case MapNodeType.Elite: return "强力精英\n丰厚奖励";
+            case MapNodeType.Boss: return "最终考验\n全力以赴";
+            case MapNodeType.Shop: return "购买卡牌\n或遗物";
+            case MapNodeType.Treasure: return "获得金币\n或融合点";
+            default: return "";
+        }
+    }
+
     string GetNodeText(MapNodeType nodeType)
     {
         switch (nodeType)
@@ -251,20 +333,20 @@ public class MapUI : MonoBehaviour
         var enemies = new List<Enemy> { enemy };
         
         // 开始战斗
-        if (BattleManager.Instance != null)
+        if (BattleManager.Instance != null && CardManager.Instance != null)
         {
             BattleManager.Instance.StartBattle(CardManager.Instance.playerDeck, enemies);
         }
-        
+
         // 创建战斗UI
         var battleUIObj = new GameObject("BattleUI");
         battleUIObj.AddComponent<BattleUI>();
     }
-    
+
     void StartBossBattle()
     {
         Debug.Log("[MapUI] 开始BOSS战");
-        
+
         // 创建BOSS
         var boss = new GameObject("Boss").AddComponent<Enemy>();
         boss.enemyName = "BOSS";
@@ -273,15 +355,15 @@ public class MapUI : MonoBehaviour
         boss.minDamage = 15;
         boss.maxDamage = 25;
         boss.behaviorPattern = EnemyBehaviorPattern.Random;
-        
+
         var enemies = new List<Enemy> { boss };
-        
+
         // 开始战斗
-        if (BattleManager.Instance != null)
+        if (BattleManager.Instance != null && CardManager.Instance != null)
         {
             BattleManager.Instance.StartBattle(CardManager.Instance.playerDeck, enemies);
         }
-        
+
         // 创建战斗UI
         var battleUIObj = new GameObject("BattleUI");
         battleUIObj.AddComponent<BattleUI>();
@@ -293,7 +375,7 @@ public class MapUI : MonoBehaviour
         
         // 创建商店UI
         var shopUIObj = new GameObject("ShopUI");
-        shopUIObj.AddComponent<ShopUI>();
+        shopUIObj.AddComponent<ShopUI>().Init();
     }
     
     void OpenTreasure()
@@ -313,6 +395,6 @@ public class MapUI : MonoBehaviour
         
         // 重新显示地图
         var mapUIObj = new GameObject("MapUI");
-        mapUIObj.AddComponent<MapUI>();
+        mapUIObj.AddComponent<MapUI>().Init();
     }
 }

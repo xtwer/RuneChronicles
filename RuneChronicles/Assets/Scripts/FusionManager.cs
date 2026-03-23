@@ -104,6 +104,7 @@ public class FusionManager : MonoBehaviour
         {
             // 预设配方融合
             var recipe = fusionRecipes[recipeKey];
+            if (CardManager.Instance == null) return null;
             var resultCard = CardManager.Instance.GetCard(recipe.resultCardId);
             
             if (resultCard != null)

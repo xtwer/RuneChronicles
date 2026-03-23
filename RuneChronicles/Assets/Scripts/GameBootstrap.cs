@@ -100,7 +100,7 @@ public class GameBootstrap : MonoBehaviour
         
         // 创建主菜单（中文版）
         var menuObj = new GameObject("MainMenuUI");
-        menuObj.AddComponent<MainMenuUI_Chinese>();
+        menuObj.AddComponent<MainMenuUI_Chinese>().Init();
         
         // 创建EventSystem（如果不存在）
         if (FindObjectOfType<UnityEngine.EventSystems.EventSystem>() == null)
