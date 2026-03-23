@@ -387,7 +387,7 @@ public class FusionUI : MonoBehaviour
         }
         
         // 检查融合点
-        if (FusionManager.Instance.GetFusionPoints() < FusionManager.Instance.fusionCost)
+        if (FusionManager.Instance.GetFusionPoints() < FusionManager.Instance.fusionPointCost)
         {
             Debug.Log("[FusionUI] 融合点不足！");
             return;

@@ -73,6 +73,14 @@ public class FusionManager : MonoBehaviour
         return false;
     }
     
+    /// <summary>
+    /// 获取当前融合点
+    /// </summary>
+    public int GetFusionPoints()
+    {
+        return currentFusionPoints;
+    }
+    
     #endregion
     
     #region 融合系统
