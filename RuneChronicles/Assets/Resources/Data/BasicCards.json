@@ -1,0 +1,104 @@
+{
+  "cards": [
+    {
+      "cardId": "ATK_001",
+      "cardName": "烈火斩",
+      "cardType": "Attack",
+      "rarity": "Common",
+      "cost": 1,
+      "value": 6,
+      "description": "造成6点伤害",
+      "flavor": "火焰符文赋予的力量"
+    },
+    {
+      "cardId": "ATK_002",
+      "cardName": "冰霜打击",
+      "cardType": "Attack",
+      "rarity": "Common",
+      "cost": 1,
+      "value": 5,
+      "description": "造成5点伤害",
+      "flavor": "冰冷刺骨的攻击"
+    },
+    {
+      "cardId": "ATK_003",
+      "cardName": "雷霆一击",
+      "cardType": "Attack",
+      "rarity": "Common",
+      "cost": 1,
+      "value": 7,
+      "description": "造成7点伤害",
+      "flavor": "迅雷不及掩耳"
+    },
+    {
+      "cardId": "ATK_004",
+      "cardName": "重击",
+      "cardType": "Attack",
+      "rarity": "Common",
+      "cost": 2,
+      "value": 12,
+      "description": "造成12点伤害",
+      "flavor": "全力一击"
+    },
+    {
+      "cardId": "ATK_005",
+      "cardName": "连斩",
+      "cardType": "Attack",
+      "rarity": "Common",
+      "cost": 1,
+      "value": 4,
+      "description": "造成4点伤害，抽1张牌",
+      "flavor": "快速而连贯的攻击"
+    },
+    {
+      "cardId": "SKL_001",
+      "cardName": "防御姿态",
+      "cardType": "Skill",
+      "rarity": "Common",
+      "cost": 1,
+      "value": 5,
+      "description": "获得5点护盾",
+      "flavor": "坚固的防御"
+    },
+    {
+      "cardId": "SKL_002",
+      "cardName": "符文护盾",
+      "cardType": "Skill",
+      "rarity": "Common",
+      "cost": 1,
+      "value": 8,
+      "description": "获得8点护盾",
+      "flavor": "符文之力凝聚的护盾"
+    },
+    {
+      "cardId": "SKL_003",
+      "cardName": "生命汲取",
+      "cardType": "Skill",
+      "rarity": "Common",
+      "cost": 1,
+      "value": 3,
+      "description": "恢复3点生命",
+      "flavor": "从符文中汲取生命能量"
+    },
+    {
+      "cardId": "PWR_001",
+      "cardName": "力量觉醒",
+      "cardType": "Power",
+      "rarity": "Rare",
+      "cost": 1,
+      "value": 2,
+      "description": "每次攻击额外造成2点伤害",
+      "flavor": "激发内在的力量"
+    },
+    {
+      "cardId": "PWR_002",
+      "cardName": "坚韧之心",
+      "cardType": "Power",
+      "rarity": "Rare",
+      "cost": 1,
+      "value": 3,
+      "description": "每回合开始时获得3点护盾",
+      "flavor": "不屈的意志"
+    }
+  ]
+}

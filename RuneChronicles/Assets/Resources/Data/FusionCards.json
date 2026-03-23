@@ -1,0 +1,104 @@
+{
+  "cards": [
+    {
+      "cardId": "FUSION_001",
+      "cardName": "冰火交融",
+      "cardType": "Attack",
+      "rarity": "Rare",
+      "cost": 1,
+      "value": 11,
+      "description": "造成11点伤害，目标获得1层易伤",
+      "flavor": "冰与火的完美结合"
+    },
+    {
+      "cardId": "FUSION_002",
+      "cardName": "雷炎斩",
+      "cardType": "Attack",
+      "rarity": "Rare",
+      "cost": 1,
+      "value": 13,
+      "description": "造成13点伤害",
+      "flavor": "雷火交加的毁灭之力"
+    },
+    {
+      "cardId": "FUSION_003",
+      "cardName": "冰雷爆",
+      "cardType": "Attack",
+      "rarity": "Rare",
+      "cost": 1,
+      "value": 12,
+      "description": "造成12点伤害，抽1张牌",
+      "flavor": "冰雷之力的爆发"
+    },
+    {
+      "cardId": "FUSION_004",
+      "cardName": "狂暴连击",
+      "cardType": "Attack",
+      "rarity": "Epic",
+      "cost": 2,
+      "value": 16,
+      "description": "造成16点伤害，抽2张牌",
+      "flavor": "无尽的连击"
+    },
+    {
+      "cardId": "FUSION_005",
+      "cardName": "坚不可摧",
+      "cardType": "Skill",
+      "rarity": "Rare",
+      "cost": 1,
+      "value": 13,
+      "description": "获得13点护盾",
+      "flavor": "绝对的防御"
+    },
+    {
+      "cardId": "FUSION_006",
+      "cardName": "火焰屏障",
+      "cardType": "Skill",
+      "rarity": "Rare",
+      "cost": 1,
+      "value": 11,
+      "description": "获得5点护盾，对所有敌人造成6点伤害",
+      "flavor": "攻守兼备的火焰之墙"
+    },
+    {
+      "cardId": "FUSION_007",
+      "cardName": "狂战士之怒",
+      "cardType": "Power",
+      "rarity": "Epic",
+      "cost": 1,
+      "value": 5,
+      "description": "每次攻击额外造成3点伤害，并恢复2点生命",
+      "flavor": "在战斗中愈战愈勇"
+    },
+    {
+      "cardId": "FUSION_008",
+      "cardName": "不屈斗志",
+      "cardType": "Power",
+      "rarity": "Epic",
+      "cost": 2,
+      "value": 8,
+      "description": "每次攻击额外造成2点伤害，每回合开始获得3点护盾",
+      "flavor": "无法被击倒的意志"
+    },
+    {
+      "cardId": "FUSION_009",
+      "cardName": "炎之吞噬",
+      "cardType": "Attack",
+      "rarity": "Rare",
+      "cost": 1,
+      "value": 9,
+      "description": "造成9点伤害，恢复4点生命",
+      "flavor": "吞噬敌人的生命之火"
+    },
+    {
+      "cardId": "FUSION_010",
+      "cardName": "雷神之力",
+      "cardType": "Attack",
+      "rarity": "Epic",
+      "cost": 1,
+      "value": 9,
+      "description": "造成9点伤害，本回合每次攻击额外造成2点伤害",
+      "flavor": "雷神降临的力量"
+    }
+  ]
+}

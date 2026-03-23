@@ -1,0 +1,34 @@
+{
+  "enemies": [
+    {
+      "enemyId": "ENM_001",
+      "enemyName": "符文傀儡",
+      "maxHP": 40,
+      "minDamage": 5,
+      "maxDamage": 7,
+      "behaviorPattern": "AttackDefend",
+      "description": "基础敌人，攻击-防御循环",
+      "flavor": "失控的符文造物"
+    },
+    {
+      "enemyId": "ENM_002",
+      "enemyName": "灵狐",
+      "maxHP": 30,
+      "minDamage": 4,
+      "maxDamage": 8,
+      "behaviorPattern": "Random",
+      "description": "敏捷敌人，行为随机",
+      "flavor": "狡猾而灵活的生物"
+    },
+    {
+      "enemyId": "ENM_003",
+      "enemyName": "岩石巨人",
+      "maxHP": 60,
+      "minDamage": 8,
+      "maxDamage": 12,
+      "behaviorPattern": "AttackOnly",
+      "description": "重型敌人，持续攻击",
+      "flavor": "坚不可摧的岩石之躯"
+    }
+  ]
+}

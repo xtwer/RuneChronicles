@@ -1,17 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.IO;
 
 /// <summary>
-/// 卡牌管理器 - Week 2版本
-/// 支持从JSON加载卡牌数据
+/// 卡牌管理器 - 自动加载所有JSON
 /// </summary>
 public class CardManager : MonoBehaviour
 {
     public static CardManager Instance { get; private set; }
     
-    [Header("卡牌数据")]
-    public TextAsset cardDataJson; // 在Inspector中拖入JSON文件
     private Dictionary<string, CardData> cardDatabase = new Dictionary<string, CardData>();
     
     [Header("当前牌库")]
@@ -32,48 +28,68 @@ public class CardManager : MonoBehaviour
     
     void Start()
     {
-        LoadCardsFromJson();
+        LoadAllCards();
     }
     
-    #region JSON加载
-    
     /// <summary>
-    /// 从JSON加载所有卡牌
+    /// 加载所有卡牌JSON
     /// </summary>
-    public void LoadCardsFromJson()
+    public void LoadAllCards()
     {
-        if (cardDataJson == null)
-        {
-            // 尝试从Resources加载
-            cardDataJson = Resources.Load<TextAsset>("Data/BasicCards");
-        }
+        Debug.Log("[CardManager] 开始加载卡牌...");
         
-        if (cardDataJson == null)
-        {
-            Debug.LogError("[CardManager] 未找到卡牌数据JSON文件");
-            return;
-        }
+        // 加载所有JSON文件
+        string[] jsonFiles = {
+            "BasicCards",
+            "FusionCards",
+            "WarriorCards",
+            "ExtendedAttackCards",
+            "ExtendedSkillCards",
+            "ExtendedPowerCards"
+        };
         
-        try
+        int totalLoaded = 0;
+        
+        foreach (var jsonFile in jsonFiles)
         {
-            CardListJson cardList = JsonUtility.FromJson<CardListJson>(cardDataJson.text);
+            var textAsset = Resources.Load<TextAsset>($"Data/{jsonFile}");
             
-            foreach (var cardJson in cardList.cards)
+            if (textAsset != null)
             {
-                var card = CreateCardFromJson(cardJson);
-                cardDatabase[card.cardId] = card;
+                try
+                {
+                    CardListJson cardList = JsonUtility.FromJson<CardListJson>(textAsset.text);
+                    
+                    if (cardList != null && cardList.cards != null)
+                    {
+                        foreach (var cardJson in cardList.cards)
+                        {
+                            var card = CreateCardFromJson(cardJson);
+                            
+                            if (card != null && !cardDatabase.ContainsKey(card.cardId))
+                            {
+                                cardDatabase[card.cardId] = card;
+                                totalLoaded++;
+                            }
+                        }
+                    }
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogError($"[CardManager] 加载 {jsonFile} 失败: {e.Message}");
+                }
             }
-            
-            Debug.Log($"[CardManager] 成功加载 {cardDatabase.Count} 张卡牌");
+            else
+            {
+                Debug.LogWarning($"[CardManager] 未找到: Resources/Data/{jsonFile}.json");
+            }
         }
-        catch (System.Exception e)
-        {
-            Debug.LogError($"[CardManager] 加载卡牌数据失败: {e.Message}");
-        }
+        
+        Debug.Log($"[CardManager] 成功加载 {totalLoaded} 张卡牌");
     }
     
     /// <summary>
-    /// 从JSON数据创建CardData
+    /// 从JSON创建CardData
     /// </summary>
     private CardData CreateCardFromJson(CardDataJson json)
     {
@@ -100,10 +116,6 @@ public class CardManager : MonoBehaviour
         
         return card;
     }
-    
-    #endregion
-    
-    #region 卡牌获取
     
     /// <summary>
     /// 根据ID获取卡牌
@@ -163,10 +175,6 @@ public class CardManager : MonoBehaviour
         return result;
     }
     
-    #endregion
-    
-    #region 牌库管理
-    
     /// <summary>
     /// 创建初始牌库
     /// </summary>
@@ -174,19 +182,23 @@ public class CardManager : MonoBehaviour
     {
         List<CardData> deck = new List<CardData>();
         
-        // 初始牌库：5张攻击卡 + 3张防御卡 + 2张技能卡
+        // 初始牌库：5张攻击卡 + 3张防御卡 + 2张能力卡
         for (int i = 1; i <= 5; i++)
         {
-            deck.Add(GetCard($"ATK_{i:D3}"));
+            var card = GetCard($"ATK_{i:D3}");
+            if (card != null) deck.Add(card);
         }
         
         for (int i = 1; i <= 3; i++)
         {
-            deck.Add(GetCard($"SKL_{i:D3}"));
+            var card = GetCard($"SKL_{i:D3}");
+            if (card != null) deck.Add(card);
         }
         
-        deck.Add(GetCard("PWR_001"));
-        deck.Add(GetCard("PWR_002"));
+        var pwr1 = GetCard("PWR_001");
+        var pwr2 = GetCard("PWR_002");
+        if (pwr1 != null) deck.Add(pwr1);
+        if (pwr2 != null) deck.Add(pwr2);
         
         Debug.Log($"[CardManager] 创建初始牌库，共 {deck.Count} 张卡");
         
@@ -218,10 +230,6 @@ public class CardManager : MonoBehaviour
         }
     }
     
-    #endregion
-    
-    #region DEBUG接口
-    
     /// <summary>
     /// DEBUG: 打印所有卡牌
     /// </summary>
@@ -233,6 +241,4 @@ public class CardManager : MonoBehaviour
             Debug.Log($"{card.cardId}: {card.cardName} (费用{card.cost}, 效果值{card.value})");
         }
     }
-    
-    #endregion
 }
