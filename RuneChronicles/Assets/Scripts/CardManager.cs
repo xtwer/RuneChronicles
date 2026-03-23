@@ -231,6 +231,19 @@ public class CardManager : MonoBehaviour
     }
     
     /// <summary>
+    /// 注册新卡牌到数据库（用于融合卡）
+    /// </summary>
+    public void RegisterCard(CardData card)
+    {
+        if (card != null && !cardDatabase.ContainsKey(card.cardId))
+        {
+            cardDatabase[card.cardId] = card;
+            allCards.Add(card);
+            Debug.Log($"[CardManager] 注册新卡牌: {card.cardName} ({card.cardId})");
+        }
+    }
+    
+    /// <summary>
     /// DEBUG: 打印所有卡牌
     /// </summary>
     public void DEBUG_PrintAllCards()

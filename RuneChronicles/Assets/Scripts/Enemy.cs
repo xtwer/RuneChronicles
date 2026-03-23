@@ -74,8 +74,11 @@ public class Enemy : MonoBehaviour
         int damage = UnityEngine.Random.Range(minDamage, maxDamage + 1);
         Debug.Log($"[Enemy] {enemyName} 攻击玩家，造成 {damage} 点伤害");
         
-        // TODO: 实际对玩家造成伤害（需要Player类）
-        // GameManager.Instance.player.TakeDamage(damage);
+        // 对玩家造成伤害
+        if (Player.Instance != null)
+        {
+            Player.Instance.TakeDamage(damage);
+        }
     }
     
     /// <summary>
@@ -202,7 +205,8 @@ public class Enemy : MonoBehaviour
         Debug.Log($"[Enemy] {enemyName} 已死亡");
         OnDeath?.Invoke();
         
-        // TODO: 播放死亡动画、掉落奖励等
+        // 销毁GameObject
+        Destroy(gameObject, 0.5f); // 延迟0.5秒销毁，让事件先触发
     }
     
     #endregion

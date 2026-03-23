@@ -260,7 +260,10 @@ public class MapManager : MonoBehaviour
                 // 金币
                 int gold = UnityEngine.Random.Range(40, 80);
                 Debug.Log($"[MapManager] 获得 {gold} 金币");
-                // TODO: GameManager.Instance.AddGold(gold);
+                if (GameManager.Instance != null)
+                {
+                    GameManager.Instance.AddGold(gold);
+                }
                 break;
             
             case 1:

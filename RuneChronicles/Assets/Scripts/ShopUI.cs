@@ -440,11 +440,18 @@ public class ShopUI : MonoBehaviour
     
     void RefreshShop()
     {
-        // 简单实现：销毁重建
-        Destroy(gameObject);
-        var newShop = new GameObject("ShopUI");
-        var shopUI = newShop.AddComponent<ShopUI>();
-        shopUI.shopCards = this.shopCards;
-        shopUI.shopRelics = this.shopRelics;
+        // 重新生成商品
+        shopCards.Clear();
+        shopRelics.Clear();
+        GenerateShopItems();
+        
+        // 销毁旧UI
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+        
+        // 重新创建UI
+        CreateShopUI();
     }
 }

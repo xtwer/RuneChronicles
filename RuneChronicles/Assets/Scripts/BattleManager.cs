@@ -345,13 +345,29 @@ public class BattleManager : MonoBehaviour
                 break;
             
             case CardType.Skill:
-                // TODO: 实现技能卡效果（护盾、抽牌等）
+                // 技能卡效果：根据描述判断效果类型
+                if (card.description.Contains("护盾") || card.description.Contains("防御"))
+                {
+                    // 获得护盾
+                    if (Player.Instance != null)
+                    {
+                        Player.Instance.GainBlock(card.value);
+                    }
+                }
+                else if (card.description.Contains("治疗") || card.description.Contains("恢复"))
+                {
+                    // 恢复生命
+                    if (Player.Instance != null)
+                    {
+                        Player.Instance.Heal(card.value);
+                    }
+                }
                 Debug.Log($"[BattleManager] 执行技能卡: {card.cardName}");
                 break;
             
             case CardType.Power:
-                // TODO: 实现能力卡效果（持续效果）
-                Debug.Log($"[BattleManager] 执行能力卡: {card.cardName}");
+                // 能力卡效果：增益效果
+                Debug.Log($"[BattleManager] 执行能力卡: {card.cardName}（增益效果暂未实现）");
                 break;
         }
     }

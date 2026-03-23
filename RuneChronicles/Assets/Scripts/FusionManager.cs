@@ -158,6 +158,12 @@ public class FusionManager : MonoBehaviour
         fusedCard.description = $"融合卡：{card1.cardName} 与 {card2.cardName} 的结合";
         fusedCard.flavor = "强大的融合之力";
         
+        // 注册到CardManager（重要！）
+        if (CardManager.Instance != null)
+        {
+            CardManager.Instance.RegisterCard(fusedCard);
+        }
+        
         return fusedCard;
     }
     
