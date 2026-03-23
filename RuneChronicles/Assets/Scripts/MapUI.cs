@@ -241,14 +241,11 @@ public class MapUI : MonoBehaviour
     
     void OpenShop()
     {
-        Debug.Log("[MapUI] 打开商店（未实现）");
+        Debug.Log("[MapUI] 打开商店");
         
-        // 暂时跳过，继续前进
-        MapManager.Instance.MoveToNextFloor(0);
-        
-        // 重新显示地图
-        var mapUIObj = new GameObject("MapUI");
-        mapUIObj.AddComponent<MapUI>();
+        // 创建商店UI
+        var shopUIObj = new GameObject("ShopUI");
+        shopUIObj.AddComponent<ShopUI>();
     }
     
     void OpenTreasure()
