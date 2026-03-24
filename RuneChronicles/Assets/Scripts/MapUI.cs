@@ -111,9 +111,11 @@ public class MapUI : MonoBehaviour
     void OnReturnToMainMenu()
     {
         Debug.Log("[MapUI] 返回主菜单");
+        
+        // 只销毁MapUI自己，保留Canvas
         Destroy(gameObject);
-        var canvas = FindObjectOfType<Canvas>();
-        if (canvas != null) Destroy(canvas.gameObject);
+        
+        // 创建新的主菜单
         var menuObj = new GameObject("MainMenuUI");
         menuObj.AddComponent<MainMenuUI_Chinese>().Init();
     }
@@ -381,7 +383,7 @@ public class MapUI : MonoBehaviour
     void OpenTreasure()
     {
         Debug.Log("[MapUI] 打开宝箱");
-        
+
         // 获得奖励
         if (GameManager.Instance != null)
         {
@@ -389,10 +391,18 @@ public class MapUI : MonoBehaviour
             GameManager.Instance.AddGold(gold);
             Debug.Log($"获得 {gold} 金币！");
         }
-        
-        // 继续前进
-        MapManager.Instance.MoveToNextFloor(0);
-        
+
+        // 给融合点
+        if (FusionManager.Instance != null)
+        {
+            FusionManager.Instance.GainFusionPoints(2);
+            Debug.Log("获得 2 融合点！");
+        }
+
+        // 推进到下一层
+        if (MapManager.Instance != null)
+            MapManager.Instance.MoveToNextFloor(0);
+
         // 重新显示地图
         var mapUIObj = new GameObject("MapUI");
         mapUIObj.AddComponent<MapUI>().Init();

@@ -46,7 +46,10 @@ public class MainMenuUI_Chinese : MonoBehaviour
         bgRect.offsetMin = Vector2.zero;
         bgRect.offsetMax = Vector2.zero;
         var bgImage = bgObj.AddComponent<Image>();
-        bgImage.color = new Color(0.1f, 0.1f, 0.15f);
+        var bgSprite = Resources.Load<Sprite>("Art/UI/Backgrounds/main_menu");
+        if (bgSprite == null) { var t = Resources.Load<Texture2D>("Art/UI/Backgrounds/main_menu"); if (t != null) bgSprite = Sprite.Create(t, new Rect(0,0,t.width,t.height), new Vector2(0.5f,0.5f)); }
+        if (bgSprite != null) { bgImage.sprite = bgSprite; bgImage.type = Image.Type.Simple; bgImage.color = Color.white; }
+        else bgImage.color = new Color(0.1f, 0.1f, 0.15f);
         
         // 标题
         var titleObj = new GameObject("Title");
@@ -88,6 +91,13 @@ public class MainMenuUI_Chinese : MonoBehaviour
         versionText.color = new Color(0.5f, 0.5f, 0.5f);
         versionText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         
+        // 播放主菜单BGM
+        if (AudioManager.Instance != null)
+        {
+            var bgmClip = Resources.Load<AudioClip>("Audio/BGM/main_menu");
+            if (bgmClip != null) AudioManager.Instance.PlayBGM(bgmClip);
+        }
+
         Debug.Log("[MainMenuUI] 主菜单已创建（中文版）");
     }
     

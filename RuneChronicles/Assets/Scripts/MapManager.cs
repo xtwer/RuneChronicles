@@ -72,6 +72,7 @@ public class MapManager : MonoBehaviour
         MapNode node = new MapNode
         {
             floor = floor,
+            row = floor, // row和floor相同
             nodeIndex = index,
             nodeType = DetermineNodeType(floor, index)
         };
@@ -289,6 +290,23 @@ public class MapManager : MonoBehaviour
     
     #endregion
     
+    #region 公共接口
+    
+    /// <summary>
+    /// 获取所有地图节点（用于测试和验证）
+    /// </summary>
+    public List<MapNode> GetAllNodes()
+    {
+        var allNodes = new List<MapNode>();
+        foreach (var floor in mapData)
+        {
+            allNodes.AddRange(floor);
+        }
+        return allNodes;
+    }
+    
+    #endregion
+    
     #region DEBUG接口
     
     /// <summary>
@@ -331,6 +349,7 @@ public class MapManager : MonoBehaviour
 public class MapNode
 {
     public int floor;
+    public int row; // 与floor相同，用于兼容测试
     public int nodeIndex;
     public MapNodeType nodeType;
     public bool isCompleted = false;
@@ -345,5 +364,7 @@ public enum MapNodeType
     Elite,      // 精英战斗
     Boss,       // BOSS战
     Shop,       // 商店
-    Treasure    // 宝箱
+    Treasure,   // 宝箱
+    Reward,     // 奖励（Treasure别名）
+    Rest        // 休息点（暂未实现）
 }

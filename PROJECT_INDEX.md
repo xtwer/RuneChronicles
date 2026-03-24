@@ -166,9 +166,8 @@ RuneChronicles/
 
 ## 📞 联系方式
 
-**项目负责人：** 解天文  
+**项目负责人：** key  
 **邮箱：** keyxie6@gmail.com  
-**项目位置：** ~/Desktop/RuneChronicles/
 
 ---
 

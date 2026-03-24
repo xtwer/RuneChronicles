@@ -36,7 +36,6 @@ public class BattleUI : MonoBehaviour
     private List<GameObject> enemyObjects = new List<GameObject>();
     private List<Text> enemyHPTexts = new List<Text>();
     private List<Slider> enemyHPBars = new List<Slider>();
-    private GameObject draggedCard = null;
     public Enemy targetEnemy = null;
     private Text combatLogText;
     
@@ -137,52 +136,60 @@ public class BattleUI : MonoBehaviour
         // 初始化UI数值
         UpdateUI();
 
+        // 播放战斗BGM
+        if (AudioManager.Instance != null)
+        {
+            var bgmClip = Resources.Load<AudioClip>("Audio/BGM/battle");
+            if (bgmClip != null) AudioManager.Instance.PlayBGM(bgmClip);
+        }
+
         Debug.Log("[BattleUI] 战斗UI创建完成");
     }
     
     void CreatePlayerPanel(Transform parent)
     {
+        // 玩家面板：左侧中部，不与手牌区重叠
         playerPanel = new GameObject("PlayerPanel");
         playerPanel.transform.SetParent(parent, false);
-        
+
         var rect = playerPanel.AddComponent<RectTransform>();
-        rect.anchorMin = new Vector2(0.05f, 0.05f);
-        rect.anchorMax = new Vector2(0.25f, 0.25f);
+        rect.anchorMin = new Vector2(0.01f, 0.43f);
+        rect.anchorMax = new Vector2(0.22f, 0.72f);
         rect.offsetMin = Vector2.zero;
         rect.offsetMax = Vector2.zero;
-        
-        var bg = playerPanel.AddComponent<Image>();
-        bg.color = new Color(0.1f, 0.1f, 0.1f, 0.8f);
-        
-        // 生命值
-        CreatePlayerStat(playerPanel.transform, "HP", new Vector2(0, 0.6f), out playerHPText, out playerHPBar);
-        
-        // 护盾
-        CreatePlayerStat(playerPanel.transform, "Block", new Vector2(0, 0.3f), out playerBlockText, out _);
 
-        // 战斗日志（玩家面板正下方）
+        playerPanel.AddComponent<Image>().color = new Color(0.08f, 0.1f, 0.14f, 0.92f);
+
+        // 生命值
+        CreatePlayerStat(playerPanel.transform, "HP", new Vector2(0, 0.55f), out playerHPText, out playerHPBar);
+
+        // 护盾
+        CreatePlayerStat(playerPanel.transform, "Block", new Vector2(0, 0.25f), out playerBlockText, out _);
+
+        // 战斗日志：玩家面板下方
         var logObj = new GameObject("CombatLog");
         logObj.transform.SetParent(parent, false);
         var logRect = logObj.AddComponent<RectTransform>();
-        logRect.anchorMin = new Vector2(0.05f, 0.27f);
-        logRect.anchorMax = new Vector2(0.25f, 0.38f);
+        logRect.anchorMin = new Vector2(0.01f, 0.30f);
+        logRect.anchorMax = new Vector2(0.22f, 0.42f);
         logRect.offsetMin = Vector2.zero;
         logRect.offsetMax = Vector2.zero;
-        logObj.AddComponent<Image>().color = new Color(0, 0, 0, 0.5f);
+        logObj.AddComponent<Image>().color = new Color(0, 0, 0, 0.45f);
 
         var logTextObj = new GameObject("LogText");
         logTextObj.transform.SetParent(logObj.transform, false);
         var logTextRect = logTextObj.AddComponent<RectTransform>();
         logTextRect.anchorMin = Vector2.zero;
         logTextRect.anchorMax = Vector2.one;
-        logTextRect.offsetMin = new Vector2(4, 2);
-        logTextRect.offsetMax = new Vector2(-4, -2);
+        logTextRect.offsetMin = new Vector2(6, 4);
+        logTextRect.offsetMax = new Vector2(-6, -4);
         combatLogText = logTextObj.AddComponent<Text>();
         combatLogText.text = "";
-        combatLogText.fontSize = 16;
+        combatLogText.fontSize = 18;
         combatLogText.alignment = TextAnchor.MiddleCenter;
-        combatLogText.color = new Color(1f, 0.8f, 0.6f);
-        combatLogText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        combatLogText.color = new Color(1f, 0.85f, 0.6f);
+        combatLogText.font = ChineseUI.GetChineseFont();
+        combatLogText.horizontalOverflow = HorizontalWrapMode.Wrap;
     }
     
     void CreatePlayerStat(Transform parent, string label, Vector2 yPos, out Text text, out Slider slider)
@@ -201,7 +208,7 @@ public class BattleUI : MonoBehaviour
         text.fontSize = 24;
         text.alignment = TextAnchor.MiddleLeft;
         text.color = Color.white;
-        text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        text.font = ChineseUI.GetChineseFont();
         
         // 血条（只给HP）
         if (label == "HP")
@@ -260,17 +267,18 @@ public class BattleUI : MonoBehaviour
     
     void CreateEnemyPanel(Transform parent)
     {
+        // 敌人面板：顶部居中，留出足够高度
         enemyPanel = new GameObject("EnemyPanel");
         enemyPanel.transform.SetParent(parent, false);
-        
+
         var rect = enemyPanel.AddComponent<RectTransform>();
-        rect.anchorMin = new Vector2(0.25f, 0.65f);
-        rect.anchorMax = new Vector2(0.75f, 0.95f);
+        rect.anchorMin = new Vector2(0.25f, 0.55f);
+        rect.anchorMax = new Vector2(0.75f, 0.98f);
         rect.offsetMin = Vector2.zero;
         rect.offsetMax = Vector2.zero;
-        
+
         var layout = enemyPanel.AddComponent<HorizontalLayoutGroup>();
-        layout.spacing = 20;
+        layout.spacing = 30;
         layout.childAlignment = TextAnchor.MiddleCenter;
         layout.childControlWidth = false;
         layout.childControlHeight = false;
@@ -312,7 +320,7 @@ public class BattleUI : MonoBehaviour
             nameText.fontStyle = FontStyle.Bold;
             nameText.alignment = TextAnchor.MiddleCenter;
             nameText.color = new Color(1f, 0.7f, 0.7f);
-            nameText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            nameText.font = ChineseUI.GetChineseFont();
 
             // HP文本
             var hpObj = new GameObject("HP");
@@ -327,7 +335,7 @@ public class BattleUI : MonoBehaviour
             hpText.fontSize = 20;
             hpText.alignment = TextAnchor.MiddleCenter;
             hpText.color = Color.white;
-            hpText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            hpText.font = ChineseUI.GetChineseFont();
             enemyHPTexts.Add(hpText);
 
             // HP条背景
@@ -378,7 +386,7 @@ public class BattleUI : MonoBehaviour
             intentText.fontSize = 18;
             intentText.alignment = TextAnchor.MiddleCenter;
             intentText.color = new Color(1f, 0.5f, 0.5f);
-            intentText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            intentText.font = ChineseUI.GetChineseFont();
 
             enemyObjects.Add(cardObj);
 
@@ -405,31 +413,39 @@ public class BattleUI : MonoBehaviour
 
     void CreateHandPanel(Transform parent)
     {
+        // 手牌区：底部全宽，高度28%，不与左右面板重叠
         handPanel = new GameObject("HandPanel");
         handPanel.transform.SetParent(parent, false);
-        
+
         var rect = handPanel.AddComponent<RectTransform>();
-        rect.anchorMin = new Vector2(0.25f, 0.05f);
-        rect.anchorMax = new Vector2(0.75f, 0.35f);
+        rect.anchorMin = new Vector2(0.01f, 0.01f);
+        rect.anchorMax = new Vector2(0.99f, 0.29f);
         rect.offsetMin = Vector2.zero;
-        rect.offsetMax = Vector2.zero;        
+        rect.offsetMax = Vector2.zero;
+
+        handPanel.AddComponent<Image>().color = new Color(0, 0, 0, 0.25f);
+
         var layout = handPanel.AddComponent<HorizontalLayoutGroup>();
         layout.spacing = 10;
-        layout.childAlignment = TextAnchor.LowerCenter;
+        layout.padding = new RectOffset(10, 10, 6, 6);
+        layout.childAlignment = TextAnchor.MiddleCenter;
         layout.childControlWidth = false;
         layout.childControlHeight = false;
     }
     
     void CreateButtonPanel(Transform parent)
     {
+        // 按钮面板：右侧中部，与玩家面板对齐
         buttonPanel = new GameObject("ButtonPanel");
         buttonPanel.transform.SetParent(parent, false);
-        
+
         var rect = buttonPanel.AddComponent<RectTransform>();
-        rect.anchorMin = new Vector2(0.80f, 0.05f);
-        rect.anchorMax = new Vector2(0.95f, 0.25f);
+        rect.anchorMin = new Vector2(0.78f, 0.30f);
+        rect.anchorMax = new Vector2(0.99f, 0.72f);
         rect.offsetMin = Vector2.zero;
         rect.offsetMax = Vector2.zero;
+
+        buttonPanel.AddComponent<Image>().color = new Color(0.08f, 0.1f, 0.14f, 0.92f);
         
         // 能量显示
         var energyObj = new GameObject("EnergyText");
@@ -442,39 +458,39 @@ public class BattleUI : MonoBehaviour
         
         energyText = energyObj.AddComponent<Text>();
         energyText.text = "能量: 3/3";
-        energyText.fontSize = 28;
+        energyText.fontSize = 30;
         energyText.alignment = TextAnchor.MiddleCenter;
-        energyText.color = new Color(0.3f, 0.6f, 1f);
-        energyText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        
+        energyText.color = new Color(0.4f, 0.75f, 1f);
+        energyText.font = ChineseUI.GetChineseFont();
+
         // 回合显示
         var turnObj = new GameObject("TurnText");
         turnObj.transform.SetParent(buttonPanel.transform, false);
         var turnRect = turnObj.AddComponent<RectTransform>();
-        turnRect.anchorMin = new Vector2(0, 0.5f);
-        turnRect.anchorMax = new Vector2(1, 0.65f);
+        turnRect.anchorMin = new Vector2(0, 0.60f);
+        turnRect.anchorMax = new Vector2(1, 0.72f);
         turnRect.offsetMin = Vector2.zero;
         turnRect.offsetMax = Vector2.zero;
-        
+
         turnText = turnObj.AddComponent<Text>();
         turnText.text = "回合: 1";
-        turnText.fontSize = 20;
+        turnText.fontSize = 22;
         turnText.alignment = TextAnchor.MiddleCenter;
-        turnText.color = Color.white;
-        turnText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        
+        turnText.color = new Color(0.85f, 0.85f, 0.85f);
+        turnText.font = ChineseUI.GetChineseFont();
+
         // 结束回合按钮
         var btnObj = new GameObject("EndTurnButton");
         btnObj.transform.SetParent(buttonPanel.transform, false);
         var btnRect = btnObj.AddComponent<RectTransform>();
-        btnRect.anchorMin = new Vector2(0, 0);
-        btnRect.anchorMax = new Vector2(1, 0.4f);
+        btnRect.anchorMin = new Vector2(0.05f, 0.03f);
+        btnRect.anchorMax = new Vector2(0.95f, 0.38f);
         btnRect.offsetMin = Vector2.zero;
         btnRect.offsetMax = Vector2.zero;
-        
+
         var btnImage = btnObj.AddComponent<Image>();
-        btnImage.color = new Color(0.8f, 0.2f, 0.2f);
-        
+        btnImage.color = new Color(0.75f, 0.18f, 0.18f);
+
         endTurnButton = btnObj.AddComponent<Button>();
         endTurnButton.onClick.AddListener(OnEndTurn);
 
@@ -488,20 +504,20 @@ public class BattleUI : MonoBehaviour
 
         var btnText = btnTextObj.AddComponent<Text>();
         btnText.text = "结束回合";
-        btnText.fontSize = 24;
+        btnText.fontSize = 26;
         btnText.alignment = TextAnchor.MiddleCenter;
         btnText.color = Color.white;
-        btnText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        btnText.font = ChineseUI.GetChineseFont();
 
         // 投降按钮
         var surrenderObj = new GameObject("SurrenderButton");
         surrenderObj.transform.SetParent(buttonPanel.transform, false);
         var surrenderRect = surrenderObj.AddComponent<RectTransform>();
-        surrenderRect.anchorMin = new Vector2(0, 0.42f);
-        surrenderRect.anchorMax = new Vector2(1, 0.55f);
+        surrenderRect.anchorMin = new Vector2(0.05f, 0.40f);
+        surrenderRect.anchorMax = new Vector2(0.95f, 0.58f);
         surrenderRect.offsetMin = Vector2.zero;
         surrenderRect.offsetMax = Vector2.zero;
-        surrenderObj.AddComponent<Image>().color = new Color(0.4f, 0.4f, 0.4f);
+        surrenderObj.AddComponent<Image>().color = new Color(0.35f, 0.35f, 0.38f);
         surrenderObj.AddComponent<Button>().onClick.AddListener(OnSurrender);
 
         var surTextObj = new GameObject("Text");
@@ -513,10 +529,10 @@ public class BattleUI : MonoBehaviour
         surTextRect.offsetMax = Vector2.zero;
         var surText = surTextObj.AddComponent<Text>();
         surText.text = "投降";
-        surText.fontSize = 20;
+        surText.fontSize = 22;
         surText.alignment = TextAnchor.MiddleCenter;
         surText.color = Color.white;
-        surText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        surText.font = ChineseUI.GetChineseFont();
     }
     
     // 事件处理
@@ -538,11 +554,18 @@ public class BattleUI : MonoBehaviour
 
     void OnPlayerTakeDamage(int damage)
     {
-        if (combatLogText == null || Player.Instance == null) return;
         if (damage <= 0)
-            combatLogText.text = $"护盾吸收了攻击！\n护盾剩余: {Player.Instance.currentBlock}";
+        {
+            AudioManager.Instance?.PlayShieldSFX();
+            if (combatLogText != null && Player.Instance != null)
+                combatLogText.text = $"护盾吸收了攻击！\n护盾剩余: {Player.Instance.currentBlock}";
+        }
         else
-            combatLogText.text = $"受到 {damage} 点伤害！\nHP: {Player.Instance.currentHP}/{Player.Instance.maxHP}";
+        {
+            AudioManager.Instance?.PlayAttackSFX();
+            if (combatLogText != null && Player.Instance != null)
+                combatLogText.text = $"受到 {damage} 点伤害！\nHP: {Player.Instance.currentHP}/{Player.Instance.maxHP}";
+        }
     }
     
     void UpdateEnergy(int energy)
@@ -574,80 +597,115 @@ public class BattleUI : MonoBehaviour
     void OnCardDrawn(CardData card)
     {
         CreateCardUI(card);
+        AudioManager.Instance?.PlayCardDrawSFX();
     }
-    
+
     void OnCardPlayed(CardData card)
     {
         RefreshHand();
         RefreshEnemyPanel();
+        AudioManager.Instance?.PlayCardPlaySFX();
     }
     
     void CreateCardUI(CardData card)
     {
         var cardObj = new GameObject($"Card_{card.cardName}");
         cardObj.transform.SetParent(handPanel.transform, false);
-        
+
         var rect = cardObj.AddComponent<RectTransform>();
-        rect.sizeDelta = new Vector2(150, 220);
-        
-        var bg = cardObj.AddComponent<Image>();
-        bg.color = GetCardColor(card.rarity);
-        
-        // 卡牌名称
+        rect.sizeDelta = new Vector2(170, 260);
+
+        cardObj.AddComponent<Image>().color = GetCardColor(card.rarity);
+
+        // 卡名（顶部条）
         var nameObj = new GameObject("Name");
         nameObj.transform.SetParent(cardObj.transform, false);
         var nameRect = nameObj.AddComponent<RectTransform>();
-        nameRect.anchorMin = new Vector2(0, 0.8f);
-        nameRect.anchorMax = new Vector2(1, 1);
-        nameRect.offsetMin = Vector2.zero;
-        nameRect.offsetMax = Vector2.zero;
-        
+        nameRect.anchorMin = new Vector2(0, 0.82f);
+        nameRect.anchorMax = Vector2.one;
+        nameRect.offsetMin = new Vector2(4, 0);
+        nameRect.offsetMax = new Vector2(-4, -2);
         var nameText = nameObj.AddComponent<Text>();
         nameText.text = card.cardName;
-        nameText.fontSize = 18;
+        nameText.fontSize = 22;
+        nameText.fontStyle = FontStyle.Bold;
         nameText.alignment = TextAnchor.MiddleCenter;
-        nameText.color = Color.black;
-        nameText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        
-        // 费用
-        var costObj = new GameObject("Cost");
-        costObj.transform.SetParent(cardObj.transform, false);
-        var costRect = costObj.AddComponent<RectTransform>();
-        costRect.anchorMin = new Vector2(0, 0);
-        costRect.anchorMax = new Vector2(0.3f, 0.2f);
-        costRect.offsetMin = Vector2.zero;
-        costRect.offsetMax = Vector2.zero;
-        
-        var costText = costObj.AddComponent<Text>();
+        nameText.color = new Color(0.05f, 0.05f, 0.05f);
+        nameText.font = ChineseUI.GetChineseFont();
+        nameText.horizontalOverflow = HorizontalWrapMode.Wrap;
+        nameText.verticalOverflow = VerticalWrapMode.Truncate;
+
+        // 描述（靠下居中区域，字体大）
+        var descObj = new GameObject("Desc");
+        descObj.transform.SetParent(cardObj.transform, false);
+        var descRect = descObj.AddComponent<RectTransform>();
+        descRect.anchorMin = new Vector2(0.04f, 0.20f);
+        descRect.anchorMax = new Vector2(0.96f, 0.80f);
+        descRect.offsetMin = Vector2.zero;
+        descRect.offsetMax = Vector2.zero;
+        var descText = descObj.AddComponent<Text>();
+        descText.text = card.description;
+        descText.fontSize = 18;
+        descText.alignment = TextAnchor.LowerCenter;
+        descText.color = new Color(0.1f, 0.1f, 0.2f);
+        descText.font = ChineseUI.GetChineseFont();
+        descText.horizontalOverflow = HorizontalWrapMode.Wrap;
+        descText.verticalOverflow = VerticalWrapMode.Overflow;
+
+        // 费用（左下）— Image + 子Text
+        var costBg = new GameObject("CostBg");
+        costBg.transform.SetParent(cardObj.transform, false);
+        var costBgRect = costBg.AddComponent<RectTransform>();
+        costBgRect.anchorMin = new Vector2(0, 0);
+        costBgRect.anchorMax = new Vector2(0.35f, 0.22f);
+        costBgRect.offsetMin = Vector2.zero;
+        costBgRect.offsetMax = Vector2.zero;
+        costBg.AddComponent<Image>().color = new Color(0.2f, 0.4f, 0.9f);
+
+        var costTextObj = new GameObject("CostText");
+        costTextObj.transform.SetParent(costBg.transform, false);
+        var costTextRect = costTextObj.AddComponent<RectTransform>();
+        costTextRect.anchorMin = Vector2.zero;
+        costTextRect.anchorMax = Vector2.one;
+        costTextRect.offsetMin = Vector2.zero;
+        costTextRect.offsetMax = Vector2.zero;
+        var costText = costTextObj.AddComponent<Text>();
         costText.text = card.cost.ToString();
-        costText.fontSize = 24;
+        costText.fontSize = 30;
         costText.fontStyle = FontStyle.Bold;
         costText.alignment = TextAnchor.MiddleCenter;
-        costText.color = new Color(0, 0.3f, 0.8f);
-        costText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        
-        // 效果值
-        var valueObj = new GameObject("Value");
-        valueObj.transform.SetParent(cardObj.transform, false);
-        var valueRect = valueObj.AddComponent<RectTransform>();
-        valueRect.anchorMin = new Vector2(0.7f, 0);
-        valueRect.anchorMax = new Vector2(1, 0.2f);
-        valueRect.offsetMin = Vector2.zero;
-        valueRect.offsetMax = Vector2.zero;
-        
-        var valueText = valueObj.AddComponent<Text>();
+        costText.color = Color.white;
+        costText.font = ChineseUI.GetChineseFont();
+
+        // 数值（右下）— Image + 子Text
+        var valueBg = new GameObject("ValueBg");
+        valueBg.transform.SetParent(cardObj.transform, false);
+        var valueBgRect = valueBg.AddComponent<RectTransform>();
+        valueBgRect.anchorMin = new Vector2(0.65f, 0);
+        valueBgRect.anchorMax = new Vector2(1, 0.22f);
+        valueBgRect.offsetMin = Vector2.zero;
+        valueBgRect.offsetMax = Vector2.zero;
+        valueBg.AddComponent<Image>().color = new Color(0.8f, 0.2f, 0.2f);
+
+        var valueTextObj = new GameObject("ValueText");
+        valueTextObj.transform.SetParent(valueBg.transform, false);
+        var valueTextRect = valueTextObj.AddComponent<RectTransform>();
+        valueTextRect.anchorMin = Vector2.zero;
+        valueTextRect.anchorMax = Vector2.one;
+        valueTextRect.offsetMin = Vector2.zero;
+        valueTextRect.offsetMax = Vector2.zero;
+        var valueText = valueTextObj.AddComponent<Text>();
         valueText.text = card.value.ToString();
-        valueText.fontSize = 24;
+        valueText.fontSize = 30;
         valueText.fontStyle = FontStyle.Bold;
         valueText.alignment = TextAnchor.MiddleCenter;
-        valueText.color = Color.red;
-        valueText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        
-        // 添加拖拽功能
+        valueText.color = Color.white;
+        valueText.font = ChineseUI.GetChineseFont();
+
         var dragger = cardObj.AddComponent<CardDragger>();
         dragger.card = card;
         dragger.battleUI = this;
-        
+
         handCardObjects.Add(cardObj);
     }
     
@@ -737,11 +795,11 @@ public class BattleUI : MonoBehaviour
     void OnSurrender()
     {
         Debug.Log("[BattleUI] 玩家投降");
+        
+        // 只销毁自己，保留Canvas
         Destroy(gameObject);
 
-        var canvas = FindObjectOfType<Canvas>();
-        if (canvas != null) Destroy(canvas.gameObject);
-
+        // 返回主菜单
         var menuObj = new GameObject("MainMenuUI");
         menuObj.AddComponent<MainMenuUI_Chinese>().Init();
     }

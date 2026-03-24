@@ -89,6 +89,9 @@ public class BattleResultUI : MonoBehaviour
             CreateButton(panelObj.transform, "返回主菜单", new Vector2(0, -50), OnGameOver);
         }
         
+        if (isVictory) AudioManager.Instance?.PlayVictorySFX();
+        else AudioManager.Instance?.PlayDefeatSFX();
+
         Debug.Log($"[BattleResultUI] 战斗结果: {(isVictory ? "胜利" : "失败")}");
     }
     
@@ -142,15 +145,11 @@ public class BattleResultUI : MonoBehaviour
     {
         Debug.Log("[BattleResultUI] 游戏结束 - 返回主菜单");
 
-        // 清理所有战斗相关UI及Canvas
+        // 清理所有战斗相关UI
         var battleUI = FindObjectOfType<BattleUI>();
         if (battleUI != null) Destroy(battleUI.gameObject);
 
-        // 销毁当前Canvas（避免残留叠加到主菜单上）
-        var canvas = FindObjectOfType<Canvas>();
-        if (canvas != null) Destroy(canvas.gameObject);
-
-        // 销毁结算UI
+        // 销毁结算UI自己（保留Canvas）
         Destroy(gameObject);
 
         // 返回主菜单

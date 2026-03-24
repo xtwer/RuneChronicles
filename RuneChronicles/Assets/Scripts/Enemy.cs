@@ -21,11 +21,15 @@ public class Enemy : MonoBehaviour
     [Header("当前意图")]
     public EnemyIntent currentIntent = EnemyIntent.Attack;
     public int intentValue = 0;
-    
+
+    [Header("护盾")]
+    public int currentBlock = 0;
+    public int bonusDamage = 0; // Buff增伤
+
     // 事件
     public event Action<int> OnTakeDamage;
     public event Action OnDeath;
-    
+
     private int turnCount = 0;
     
     void Start()
@@ -42,6 +46,7 @@ public class Enemy : MonoBehaviour
     public void ExecuteAction()
     {
         turnCount++;
+        currentBlock = 0; // 每回合清除护盾
         
         switch (currentIntent)
         {
@@ -71,45 +76,33 @@ public class Enemy : MonoBehaviour
     /// </summary>
     private void PerformAttack()
     {
-        int damage = UnityEngine.Random.Range(minDamage, maxDamage + 1);
+        int damage = UnityEngine.Random.Range(minDamage, maxDamage + 1) + bonusDamage;
         Debug.Log($"[Enemy] {enemyName} 攻击玩家，造成 {damage} 点伤害");
-        
-        // 对玩家造成伤害
+
         if (Player.Instance != null)
-        {
             Player.Instance.TakeDamage(damage);
-        }
     }
-    
-    /// <summary>
-    /// 防御
-    /// </summary>
+
     private void PerformDefend()
     {
-        int block = intentValue;
-        Debug.Log($"[Enemy] {enemyName} 防御，获得 {block} 点护盾");
-        
-        // TODO: 实际获得护盾
+        int block = intentValue > 0 ? intentValue : 8;
+        currentBlock += block;
+        Debug.Log($"[Enemy] {enemyName} 防御，获得 {block} 点护盾（当前: {currentBlock}）");
     }
-    
-    /// <summary>
-    /// 增益
-    /// </summary>
+
     private void PerformBuff()
     {
-        Debug.Log($"[Enemy] {enemyName} 使用增益技能");
-        
-        // TODO: 实际增益效果
+        bonusDamage += 3;
+        Heal(5);
+        Debug.Log($"[Enemy] {enemyName} 使用增益：攻击+3（当前增伤: {bonusDamage}），恢复5HP");
     }
-    
-    /// <summary>
-    /// 减益
-    /// </summary>
+
     private void PerformDebuff()
     {
-        Debug.Log($"[Enemy] {enemyName} 对玩家施加减益");
-        
-        // TODO: 实际减益效果
+        int debuffDamage = UnityEngine.Random.Range(2, 5);
+        Debug.Log($"[Enemy] {enemyName} 对玩家施加减益：造成{debuffDamage}点伤害");
+        if (Player.Instance != null)
+            Player.Instance.TakeDamage(debuffDamage);
     }
     
     /// <summary>
@@ -140,22 +133,61 @@ public class Enemy : MonoBehaviour
                 break;
             
             case EnemyBehaviorPattern.Random:
-                // 随机行为
-                int random = UnityEngine.Random.Range(0, 3);
+                int random = UnityEngine.Random.Range(0, 4);
                 switch (random)
                 {
-                    case 0:
+                    case 0: case 1:
                         currentIntent = EnemyIntent.Attack;
                         intentValue = UnityEngine.Random.Range(minDamage, maxDamage + 1);
                         break;
-                    case 1:
-                        currentIntent = EnemyIntent.Defend;
-                        intentValue = 5;
-                        break;
                     case 2:
+                        currentIntent = EnemyIntent.Defend;
+                        intentValue = 8;
+                        break;
+                    case 3:
                         currentIntent = EnemyIntent.Buff;
                         intentValue = 0;
                         break;
+                }
+                break;
+
+            case EnemyBehaviorPattern.Aggressive:
+                // 70%攻击 20%Buff 10%防御
+                float aggroRoll = UnityEngine.Random.value;
+                if (aggroRoll < 0.7f)
+                {
+                    currentIntent = EnemyIntent.Attack;
+                    intentValue = UnityEngine.Random.Range(minDamage, maxDamage + 1);
+                }
+                else if (aggroRoll < 0.9f)
+                {
+                    currentIntent = EnemyIntent.Buff;
+                    intentValue = 0;
+                }
+                else
+                {
+                    currentIntent = EnemyIntent.Defend;
+                    intentValue = 5;
+                }
+                break;
+
+            case EnemyBehaviorPattern.Defensive:
+                // 50%防御 30%攻击 20%Buff
+                float defRoll = UnityEngine.Random.value;
+                if (defRoll < 0.5f)
+                {
+                    currentIntent = EnemyIntent.Defend;
+                    intentValue = 10;
+                }
+                else if (defRoll < 0.8f)
+                {
+                    currentIntent = EnemyIntent.Attack;
+                    intentValue = UnityEngine.Random.Range(minDamage, maxDamage + 1);
+                }
+                else
+                {
+                    currentIntent = EnemyIntent.Buff;
+                    intentValue = 0;
                 }
                 break;
         }
@@ -172,18 +204,33 @@ public class Enemy : MonoBehaviour
     /// </summary>
     public void TakeDamage(int damage)
     {
-        currentHP -= damage;
-        currentHP = Mathf.Max(0, currentHP);
-        
-        Debug.Log($"[Enemy] {enemyName} 受到 {damage} 点伤害，剩余HP: {currentHP}/{maxHP}");
-        
-        OnTakeDamage?.Invoke(damage);
-        
-        // 检查死亡
-        if (currentHP <= 0)
+        int actualDamage = damage;
+
+        // 先消耗护盾
+        if (currentBlock > 0)
         {
-            Die();
+            if (currentBlock >= damage)
+            {
+                currentBlock -= damage;
+                actualDamage = 0;
+                Debug.Log($"[Enemy] {enemyName} 护盾吸收 {damage} 点伤害，剩余护盾: {currentBlock}");
+            }
+            else
+            {
+                actualDamage = damage - currentBlock;
+                currentBlock = 0;
+            }
         }
+
+        currentHP -= actualDamage;
+        currentHP = Mathf.Max(0, currentHP);
+
+        Debug.Log($"[Enemy] {enemyName} 受到 {actualDamage} 点伤害，剩余HP: {currentHP}/{maxHP}");
+
+        OnTakeDamage?.Invoke(actualDamage);
+
+        if (currentHP <= 0)
+            Die();
     }
     
     /// <summary>

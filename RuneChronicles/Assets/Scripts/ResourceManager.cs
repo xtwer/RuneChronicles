@@ -51,9 +51,8 @@ public class ResourceManager : MonoBehaviour
         
         foreach (var sprite in sprites)
         {
-            // 文件名格式：Card_ATK_001.png → cardId = ATK_001
-            string cardId = sprite.name.Replace("Card_", "");
-            cardSprites[cardId] = sprite;
+            // 文件名即cardId，如 ATK_001.png → cardId = ATK_001
+            cardSprites[sprite.name] = sprite;
         }
         
         Debug.Log($"[ResourceManager] 加载 {cardSprites.Count} 张卡牌图片");
@@ -93,16 +92,14 @@ public class ResourceManager : MonoBehaviour
         Sprite[] icons = Resources.LoadAll<Sprite>("Art/UI/Icons");
         foreach (var icon in icons)
         {
-            string iconName = icon.name.Replace("Icon_", "");
-            iconSprites[iconName] = icon;
+            iconSprites[icon.name] = icon;
         }
-        
+
         // 加载背景
         Sprite[] backgrounds = Resources.LoadAll<Sprite>("Art/UI/Backgrounds");
         foreach (var bg in backgrounds)
         {
-            string bgName = bg.name.Replace("BG_", "");
-            backgroundSprites[bgName] = bg;
+            backgroundSprites[bg.name] = bg;
         }
         
         Debug.Log($"[ResourceManager] 加载 {iconSprites.Count} 个图标，{backgroundSprites.Count} 个背景");

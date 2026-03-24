@@ -185,6 +185,28 @@ public class RelicManager : MonoBehaviour
     {
         return new List<RelicData>(relicDatabase.Values);
     }
+    
+    /// <summary>
+    /// 获取当前拥有的遗物ID列表（用于存档）
+    /// </summary>
+    public List<string> GetOwnedRelics()
+    {
+        List<string> ids = new List<string>();
+        foreach (var relic in currentRelics)
+        {
+            ids.Add(relic.relicId);
+        }
+        return ids;
+    }
+    
+    /// <summary>
+    /// 清空所有遗物（用于读档）
+    /// </summary>
+    public void ClearAllRelics()
+    {
+        currentRelics.Clear();
+        Debug.Log("[RelicManager] 已清空所有遗物");
+    }
 }
 
 /// <summary>

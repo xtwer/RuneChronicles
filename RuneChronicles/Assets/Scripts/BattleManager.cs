@@ -28,6 +28,15 @@ public class BattleManager : MonoBehaviour
     // 敌人相关
     private List<Enemy> enemies = new List<Enemy>();
 
+    // Power卡持续效果（战斗期间累加）
+    [Header("Power卡效果")]
+    public int playerBonusDamage = 0;   // 每次攻击额外伤害
+    public int turnStartBlock = 0;       // 每回合开始获得的护盾
+    public int turnStartHeal = 0;        // 每回合开始恢复的生命
+    public int turnStartEnergy = 0;      // 每回合额外能量
+    public int turnStartDraw = 0;        // 每回合额外抽牌
+    public float lifeStealPercent = 0f;  // 吸血百分比（0~1）
+
     // 事件
     public event Action OnBattleStart;
     public event Action OnPlayerTurnStart;
@@ -69,7 +78,15 @@ public class BattleManager : MonoBehaviour
         
         currentTurn = 1;
         currentState = BattleState.BattleStart;
-        
+
+        // 重置Power卡效果
+        playerBonusDamage = 0;
+        turnStartBlock = 0;
+        turnStartHeal = 0;
+        turnStartEnergy = 0;
+        turnStartDraw = 0;
+        lifeStealPercent = 0f;
+
         // 洗牌
         ShuffleDeck();
         
@@ -88,13 +105,27 @@ public class BattleManager : MonoBehaviour
         Debug.Log($"[BattleManager] 玩家回合 {currentTurn} 开始");
         
         currentState = BattleState.PlayerTurn;
-        
+
+        // 清除护盾（杀戮尖塔规则：每回合开始清护盾）
+        if (Player.Instance != null)
+            Player.Instance.ClearBlock();
+
         // 恢复能量
         SetEnergy(maxEnergy);
-        
+
         // 抽牌
         DrawCards(cardsPerTurn);
-        
+
+        // Power卡回合开始效果
+        if (turnStartBlock > 0)
+            Player.Instance?.GainBlock(turnStartBlock);
+        if (turnStartHeal > 0)
+            Player.Instance?.Heal(turnStartHeal);
+        if (turnStartEnergy > 0)
+            GainEnergy(turnStartEnergy);
+        if (turnStartDraw > 0)
+            DrawCards(turnStartDraw);
+
         // 触发事件
         OnPlayerTurnStart?.Invoke();
     }
@@ -173,10 +204,12 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     public void EndBattle()
     {
+        if (currentState == BattleState.BattleEnd) return; // 防止重复触发
+
         Debug.Log("[BattleManager] 战斗结束");
-        
+
         currentState = BattleState.BattleEnd;
-        
+
         // 触发事件
         OnBattleEnd?.Invoke();
     }
@@ -343,45 +376,175 @@ public class BattleManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 执行卡牌效果
+    /// 执行卡牌效果（基于描述关键字解析多重效果）
     /// </summary>
     private void ExecuteCardEffect(CardData card, Enemy target)
     {
-        switch (card.cardType)
+        string desc = card.description;
+
+        Debug.Log($"[BattleManager] 执行效果: {card.cardName} 类型={card.cardType} 目标={(target != null ? target.enemyName : "null")}");
+
+        // === 伤害效果 ===
+        if (card.cardType == CardType.Attack)
         {
-            case CardType.Attack:
+            int totalDamage = card.value + playerBonusDamage;
+
+            // 血性：生命低于50%时额外加伤（临时检查）
+            if (Player.Instance != null && Player.Instance.currentHP < Player.Instance.maxHP * 0.5f)
+            {
+                var condMatch = System.Text.RegularExpressions.Regex.Match(desc, @"低于.*?额外造成(\d+)");
+                if (condMatch.Success)
+                    totalDamage += int.Parse(condMatch.Groups[1].Value);
+            }
+
+            if (desc.Contains("所有敌人"))
+            {
+                foreach (var e in GetAliveEnemies())
+                    e.TakeDamage(totalDamage);
+            }
+            else
+            {
+                // target 为 null 时自动找第一个存活敌人
+                if (target == null || target.currentHP <= 0)
+                {
+                    var alive = GetAliveEnemies();
+                    target = alive.Count > 0 ? alive[0] : null;
+                }
                 if (target != null)
                 {
-                    target.TakeDamage(card.value);
+                    target.TakeDamage(totalDamage);
+                    // 吸血
+                    if (lifeStealPercent > 0)
+                        Player.Instance?.Heal(Mathf.Max(1, Mathf.RoundToInt(totalDamage * lifeStealPercent)));
                 }
-                break;
-            
-            case CardType.Skill:
-                // 技能卡效果：根据描述判断效果类型
-                if (card.description.Contains("护盾") || card.description.Contains("防御"))
+                else
                 {
-                    // 获得护盾
-                    if (Player.Instance != null)
-                    {
-                        Player.Instance.GainBlock(card.value);
-                    }
+                    Debug.LogWarning($"[BattleManager] 攻击卡 {card.cardName} 无有效目标！");
                 }
-                else if (card.description.Contains("治疗") || card.description.Contains("恢复"))
-                {
-                    // 恢复生命
-                    if (Player.Instance != null)
-                    {
-                        Player.Instance.Heal(card.value);
-                    }
-                }
-                Debug.Log($"[BattleManager] 执行技能卡: {card.cardName}");
-                break;
-            
-            case CardType.Power:
-                // 能力卡效果：增益效果
-                Debug.Log($"[BattleManager] 执行能力卡: {card.cardName}（增益效果暂未实现）");
-                break;
+            }
         }
+
+        // === 护盾效果 ===
+        if (desc.Contains("护盾") || desc.Contains("防御"))
+        {
+            // 解析护盾值：优先从描述中提取，否则使用card.value
+            int blockValue = card.value;
+            var blockMatch = System.Text.RegularExpressions.Regex.Match(desc, @"(\d+)点护盾");
+            if (blockMatch.Success) blockValue = int.Parse(blockMatch.Groups[1].Value);
+            else if (card.cardType == CardType.Attack)
+            {
+                // 攻击牌附带护盾，取描述中的数值
+                blockMatch = System.Text.RegularExpressions.Regex.Match(desc, @"获得(\d+)");
+                if (blockMatch.Success) blockValue = int.Parse(blockMatch.Groups[1].Value);
+            }
+            Player.Instance?.GainBlock(blockValue);
+        }
+
+        // === 治疗效果 ===
+        if (desc.Contains("治疗") || desc.Contains("恢复"))
+        {
+            int healValue = card.value;
+            var healMatch = System.Text.RegularExpressions.Regex.Match(desc, @"恢复(\d+)点生命");
+            if (healMatch.Success) healValue = int.Parse(healMatch.Groups[1].Value);
+            Player.Instance?.Heal(healValue);
+        }
+
+        // === 抽牌效果 ===
+        if (desc.Contains("抽"))
+        {
+            var drawMatch = System.Text.RegularExpressions.Regex.Match(desc, @"抽(\d+)张");
+            if (drawMatch.Success)
+            {
+                int drawCount = int.Parse(drawMatch.Groups[1].Value);
+                DrawCards(drawCount);
+            }
+        }
+
+        // === 能量效果 ===
+        if (desc.Contains("能量"))
+        {
+            var energyMatch = System.Text.RegularExpressions.Regex.Match(desc, @"(\d+)点能量");
+            if (energyMatch.Success)
+            {
+                int energyGain = int.Parse(energyMatch.Groups[1].Value);
+                GainEnergy(energyGain);
+            }
+        }
+
+        // === Power卡持续增益效果（注册到战斗期间生效）===
+        if (card.cardType == CardType.Power)
+        {
+            bool registered = false;
+
+            // 每次攻击额外造成N点伤害
+            var bonusAtkMatch = System.Text.RegularExpressions.Regex.Match(desc, @"每次攻击额外造成(\d+)点伤害");
+            if (bonusAtkMatch.Success)
+            {
+                int bonus = int.Parse(bonusAtkMatch.Groups[1].Value);
+                playerBonusDamage += bonus;
+                Debug.Log($"[BattleManager] {card.cardName}: 攻击加伤 +{bonus}（当前:{playerBonusDamage}）");
+                registered = true;
+            }
+
+            // 每回合获得N点护盾（支持多效果描述，如"每回合开始获得3点护盾，恢复3点生命"）
+            var blockMatch2 = System.Text.RegularExpressions.Regex.Match(desc, @"每回合[^。]*?获得(\d+)点护盾");
+            if (blockMatch2.Success)
+            {
+                int b = int.Parse(blockMatch2.Groups[1].Value);
+                turnStartBlock += b;
+                Debug.Log($"[BattleManager] {card.cardName}: 每回合护盾 +{b}（当前:{turnStartBlock}）");
+                registered = true;
+            }
+
+            // 每回合恢复N点生命
+            var healMatch2 = System.Text.RegularExpressions.Regex.Match(desc, @"每回合[^。]*?恢复(\d+)点生命");
+            if (healMatch2.Success)
+            {
+                int h = int.Parse(healMatch2.Groups[1].Value);
+                turnStartHeal += h;
+                Debug.Log($"[BattleManager] {card.cardName}: 每回合治疗 +{h}（当前:{turnStartHeal}）");
+                registered = true;
+            }
+
+            // 每回合额外获得N点能量
+            var energyMatch2 = System.Text.RegularExpressions.Regex.Match(desc, @"每回合额外获得(\d+)点能量");
+            if (energyMatch2.Success)
+            {
+                int e = int.Parse(energyMatch2.Groups[1].Value);
+                turnStartEnergy += e;
+                Debug.Log($"[BattleManager] {card.cardName}: 每回合能量 +{e}（当前:{turnStartEnergy}）");
+                registered = true;
+            }
+
+            // 每回合开始抽N张额外卡牌
+            var drawMatch2 = System.Text.RegularExpressions.Regex.Match(desc, @"每回合[^，。]*抽(\d+)张");
+            if (drawMatch2.Success)
+            {
+                int d = int.Parse(drawMatch2.Groups[1].Value);
+                turnStartDraw += d;
+                Debug.Log($"[BattleManager] {card.cardName}: 每回合抽牌 +{d}（当前:{turnStartDraw}）");
+                registered = true;
+            }
+
+            // 吸血：攻击恢复N%伤害值的生命
+            var lifeStealMatch = System.Text.RegularExpressions.Regex.Match(desc, @"攻击恢复(\d+)%");
+            if (lifeStealMatch.Success)
+            {
+                float ls = int.Parse(lifeStealMatch.Groups[1].Value) / 100f;
+                lifeStealPercent += ls;
+                Debug.Log($"[BattleManager] {card.cardName}: 吸血 +{ls * 100}%（当前:{lifeStealPercent * 100}%）");
+                registered = true;
+            }
+
+            // 未能解析的Power卡：即时给予护盾作为保底
+            if (!registered)
+            {
+                Player.Instance?.GainBlock(card.value);
+                Debug.Log($"[BattleManager] {card.cardName}: 通用效果 获得{card.value}点护盾");
+            }
+        }
+
+        Debug.Log($"[BattleManager] 执行卡牌: {card.cardName} ({card.cardType})");
     }
 
     /// <summary>

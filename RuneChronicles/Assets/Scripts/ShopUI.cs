@@ -313,6 +313,7 @@ public class ShopUI : MonoBehaviour
         {
             GameManager.Instance.SpendGold(CARD_PRICE);
             CardManager.Instance.AddCardToDeck(card.cardId);
+            AudioManager.Instance?.PlayCoinSFX();
             Debug.Log($"[ShopUI] 购买卡牌: {card.cardName}");
             shopCards.Remove(card);
             RefreshShop();
@@ -331,6 +332,7 @@ public class ShopUI : MonoBehaviour
         {
             GameManager.Instance.SpendGold(RELIC_PRICE);
             RelicManager.Instance.ObtainRelic(relicId);
+            AudioManager.Instance?.PlayCoinSFX();
             Debug.Log($"[ShopUI] 购买遗物: {relicId}");
             shopRelics.Remove(relicId);
             RefreshShop();
@@ -377,9 +379,34 @@ public class ShopUI : MonoBehaviour
 
     void RefreshShop()
     {
-        shopCards.Clear();
-        shopRelics.Clear();
-        GenerateShopItems();
+        // 只重建UI，不重新生成商品（保留当前库存）
         CreateShopUI();
+    }
+
+    // ========== 测试接口 ==========
+    /// <summary>
+    /// 获取当前商店卡牌（供测试使用）
+    /// </summary>
+    public List<CardData> GetCurrentCards() => new List<CardData>(shopCards);
+
+    /// <summary>
+    /// 获取当前商店遗物（供测试使用）
+    /// </summary>
+    public List<string> GetCurrentRelics() => new List<string>(shopRelics);
+
+    /// <summary>
+    /// 单例实例（供测试访问）
+    /// </summary>
+    public static ShopUI Instance { get; private set; }
+
+    void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+    }
+
+    void OnDestroy()
+    {
+        if (Instance == this) Instance = null;
     }
 }

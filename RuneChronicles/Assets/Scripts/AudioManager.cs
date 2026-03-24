@@ -187,44 +187,47 @@ public class AudioManager : MonoBehaviour
     /// </summary>
     public void PlayCardDrawSFX()
     {
-        Debug.Log("[AudioManager] 播放：抽牌音效（占位符）");
-        // TODO: PlaySFX(cardDrawClip);
+        PlaySFX(Resources.Load<AudioClip>("Audio/SFX/card_draw"));
     }
-    
-    /// <summary>
-    /// 播放卡牌打出音效（占位符）
-    /// </summary>
+
     public void PlayCardPlaySFX()
     {
-        Debug.Log("[AudioManager] 播放：出牌音效（占位符）");
-        // TODO: PlaySFX(cardPlayClip);
+        PlaySFX(Resources.Load<AudioClip>("Audio/SFX/card_play"));
     }
-    
-    /// <summary>
-    /// 播放攻击音效（占位符）
-    /// </summary>
+
     public void PlayAttackSFX()
     {
-        Debug.Log("[AudioManager] 播放：攻击音效（占位符）");
-        // TODO: PlaySFX(attackClip);
+        PlaySFX(Resources.Load<AudioClip>("Audio/SFX/attack"));
     }
-    
-    /// <summary>
-    /// 播放融合音效（占位符）
-    /// </summary>
+
     public void PlayFusionSFX()
     {
-        Debug.Log("[AudioManager] 播放：融合音效（占位符）");
-        // TODO: PlaySFX(fusionClip);
+        PlaySFX(Resources.Load<AudioClip>("Audio/SFX/fusion"));
     }
-    
-    /// <summary>
-    /// 播放按钮点击音效（占位符）
-    /// </summary>
+
     public void PlayButtonClickSFX()
     {
-        Debug.Log("[AudioManager] 播放：按钮音效（占位符）");
-        // TODO: PlaySFX(buttonClickClip);
+        PlaySFX(Resources.Load<AudioClip>("Audio/SFX/button_click"));
+    }
+
+    public void PlayVictorySFX()
+    {
+        PlaySFX(Resources.Load<AudioClip>("Audio/SFX/victory"));
+    }
+
+    public void PlayDefeatSFX()
+    {
+        PlaySFX(Resources.Load<AudioClip>("Audio/SFX/defeat"));
+    }
+
+    public void PlayShieldSFX()
+    {
+        PlaySFX(Resources.Load<AudioClip>("Audio/SFX/shield"));
+    }
+
+    public void PlayCoinSFX()
+    {
+        PlaySFX(Resources.Load<AudioClip>("Audio/SFX/coin"));
     }
     
     #endregion

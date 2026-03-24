@@ -408,6 +408,7 @@ public class FusionUI : MonoBehaviour
 
             UpdateFusionPoints();
             RefreshDeckPanel();
+            AudioManager.Instance?.PlayFusionSFX();
             SetStatus($"融合成功！获得【{result.cardName}】", new Color(0.3f, 1f, 0.5f));
         }
         else

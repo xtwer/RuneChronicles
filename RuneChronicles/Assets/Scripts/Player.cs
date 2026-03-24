@@ -147,16 +147,15 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Die()
     {
+        if (isDead) return; // 防止重复触发
+
         isDead = true;
         Debug.Log("[Player] 玩家死亡");
-        
+
         OnDeath?.Invoke();
-        
-        // TODO: 触发战斗失败
+
         if (BattleManager.Instance != null)
-        {
             BattleManager.Instance.EndBattle();
-        }
     }
     
     /// <summary>

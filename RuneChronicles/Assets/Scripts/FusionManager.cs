@@ -140,7 +140,7 @@ public class FusionManager : MonoBehaviour
     {
         // 计算融合后的属性
         int newCost = Mathf.CeilToInt((card1.cost + card2.cost) / 2f);
-        int newValue = card1.value + card2.value;
+        int newValue = Mathf.Min(card1.value + card2.value, 30); // 上限30防止数值溢出
         
         // 随机选择一个稀有度（优先高稀有度）
         CardRarity newRarity = (CardRarity)Mathf.Max((int)card1.rarity, (int)card2.rarity);

@@ -1,0 +1,82 @@
+{
+  "version": "1.0.0",
+  "description": "RuneChronicles 资源配置清单 - 可替换资源标记",
+  "lastUpdate": "2026-03-24",
+  
+  "cards": {
+    "_comment": "卡牌图片 - 后续可一键替换为水墨画",
+    "ATK_001": { "image": "Art/Cards/ATK_001.png", "replaceable": true },
+    "ATK_002": { "image": "Art/Cards/ATK_002.png", "replaceable": true },
+    "ATK_003": { "image": "Art/Cards/ATK_003.png", "replaceable": true },
+    "ATK_004": { "image": "Art/Cards/ATK_004.png", "replaceable": true },
+    "ATK_005": { "image": "Art/Cards/ATK_005.png", "replaceable": true },
+    "SKILL_001": { "image": "Art/Cards/SKILL_001.png", "replaceable": true },
+    "SKILL_002": { "image": "Art/Cards/SKILL_002.png", "replaceable": true },
+    "POWER_001": { "image": "Art/Cards/POWER_001.png", "replaceable": true },
+    "FUSION_001": { "image": "Art/Cards/FUSION_001.png", "replaceable": true }
+  },
+  
+  "characters": {
+    "_comment": "角色立绘 - 后续可替换",
+    "mage": { "image": "Art/Characters/mage.png", "replaceable": true },
+    "warrior": { "image": "Art/Characters/warrior.png", "replaceable": true }
+  },
+  
+  "enemies": {
+    "_comment": "敌人立绘 - 后续可替换",
+    "enemy_001": { "image": "Art/Enemies/enemy_001.png", "replaceable": true },
+    "enemy_002": { "image": "Art/Enemies/enemy_002.png", "replaceable": true },
+    "enemy_003": { "image": "Art/Enemies/enemy_003.png", "replaceable": true }
+  },
+  
+  "ui": {
+    "_comment": "UI元素 - 免费资源，不替换",
+    "button_normal": { "image": "Art/UI/Buttons/button_normal.png", "replaceable": false, "source": "Kenney.nl" },
+    "button_hover": { "image": "Art/UI/Buttons/button_hover.png", "replaceable": false, "source": "Kenney.nl" },
+    "icon_coin": { "image": "Art/UI/Icons/coin.png", "replaceable": false, "source": "Kenney.nl" },
+    "icon_heart": { "image": "Art/UI/Icons/heart.png", "replaceable": false, "source": "Kenney.nl" },
+    "icon_energy": { "image": "Art/UI/Icons/energy.png", "replaceable": false, "source": "Kenney.nl" }
+  },
+  
+  "audio": {
+    "bgm": {
+      "_comment": "背景音乐 - CC BY 许可",
+      "main_menu": {
+        "file": "Audio/BGM/main_menu.mp3",
+        "replaceable": false,
+        "license": "CC BY 3.0",
+        "artist": "Kevin MacLeod",
+        "source": "incompetech.com"
+      },
+      "battle": {
+        "file": "Audio/BGM/battle.mp3",
+        "replaceable": false,
+        "license": "CC BY 3.0",
+        "artist": "Kevin MacLeod",
+        "source": "incompetech.com"
+      },
+      "boss": {
+        "file": "Audio/BGM/boss.mp3",
+        "replaceable": false,
+        "license": "CC BY 3.0",
+        "artist": "Kevin MacLeod",
+        "source": "incompetech.com"
+      }
+    },
+    "sfx": {
+      "_comment": "音效 - CC0 许可",
+      "card_play": { "file": "Audio/SFX/card_play.wav", "replaceable": false, "license": "CC0", "source": "Freesound.org" },
+      "card_draw": { "file": "Audio/SFX/card_draw.wav", "replaceable": false, "license": "CC0", "source": "Freesound.org" },
+      "attack": { "file": "Audio/SFX/attack.wav", "replaceable": false, "license": "CC0", "source": "Freesound.org" },
+      "shield": { "file": "Audio/SFX/shield.wav", "replaceable": false, "license": "CC0", "source": "Freesound.org" },
+      "button_click": { "file": "Audio/SFX/button_click.wav", "replaceable": false, "license": "CC0", "source": "Freesound.org" }
+    }
+  },
+  
+  "replacementGuide": {
+    "cards": "将新的水墨画放入 new_cards/ 目录，命名为 [cardId].png，然后运行 scripts/replace_assets.py",
+    "characters": "将新的角色立绘放入 new_characters/ 目录",
+    "enemies": "将新的敌人立绘放入 new_enemies/ 目录",
+    "script": "python3 scripts/replace_assets.py <source_dir>"
+  }
+}
